@@ -1,0 +1,11 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="editextStyle">
+        <item name="android:background">@drawable/editext</item>
+    </style>
+
+    <style name="buttonStyle">
+        <item name="android:background">@drawable/button_xml</item>
+    </style>
+
+</resources>

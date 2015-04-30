@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.aretha.slidemenu.SlideMenu
+        android:id="@+id/slideMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <FrameLayout
+            xmlns:slidemenu="http://schemas.android.com/apk/res-auto"
+            android:layout_width="@dimen/dimen_250dp"
+            android:layout_height="match_parent"
+            slidemenu:layout_role="primaryMenu" >
+        </FrameLayout>
+
+        <FrameLayout
+            xmlns:slidemenu="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            slidemenu:layout_role="content"
+            android:background="#ffffff"
+            android:orientation="vertical" >
+        </FrameLayout>
+
+        <FrameLayout
+            xmlns:slidemenu="http://schemas.android.com/apk/res-auto"
+            android:layout_width="@dimen/dimen_250dp"
+            android:layout_height="match_parent"
+            slidemenu:layout_role="secondaryMenu"
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:scaleType="center" >
+        </FrameLayout>
+    </com.aretha.slidemenu.SlideMenu>
+
+</RelativeLayout>

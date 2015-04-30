@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/loginactivity_user"
+        style="@style/editextStyle"
+        android:layout_width="@dimen/dimen_300dp"
+        android:layout_height="@dimen/dimen_50dp"
+        android:layout_marginBottom="@dimen/dimen_5dp"
+        android:hint="User"
+        android:paddingLeft="@dimen/dimen_10dp"
+        android:paddingRight="@dimen/dimen_10dp"
+        android:singleLine="true"
+        android:textSize="@dimen/dimen_20dp" />
+
+    <EditText
+        android:id="@+id/loginactivity_password"
+        style="@style/editextStyle"
+        android:layout_width="@dimen/dimen_300dp"
+        android:layout_height="@dimen/dimen_50dp"
+        android:layout_marginBottom="@dimen/dimen_5dp"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:paddingLeft="@dimen/dimen_10dp"
+        android:paddingRight="@dimen/dimen_10dp"
+        android:singleLine="true"
+        android:textSize="@dimen/dimen_20dp" />
+
+    <Button
+        android:id="@+id/loginactivity_btn_login"
+        style="@style/buttonStyle"
+        android:layout_width="@dimen/dimen_300dp"
+        android:layout_height="@dimen/dimen_50dp"
+        android:text="Button"
+        android:textSize="@dimen/dimen_20dp" />
+
+</LinearLayout>
