@@ -6,14 +6,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class Main {
-	public static int[] types = new int[] { 320, 360, 400, 420, 426, 460, 470,
-			480, 600, 720, 736, 768, 800, 854, 960, 1024, 1152, 1200, 1280,
-			1536, 1600, 1920, 2560 };
+	public static int[] types = new int[] { 320, 360, 400, 420, 426, 460, 470, 480, 600, 720, 736, 768, 800, 854, 960, 1024, 1152, 1200, 1280, 1536, 1600, 1920, 2560 };
 
 	/**
 	 * land is base 160 port is base 320
 	 */
-	public static int base = 160;
+	public static int base = 320;
 	public static String baseStr = "<dimen name=\"dimen_%sdp\">%sdip</dimen>";
 	public static String baseStrSP = "<dimen name=\"dimen_%ssp\">%ssp</dimen>";
 	public static final String BASE_NAME = "values-w%sdp%s/dimens-m1.xml";
@@ -56,12 +54,13 @@ public class Main {
 		} else {
 			base = 320;
 		}
-		float scale = (float) type / (float) base / 2;
+		// float scale = (float) type / (float) base / 2;
+		float scale = (float) type / (float) base;
 		StringBuilder builder = new StringBuilder();
 		builder.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 		builder.append("\n");
 		builder.append("<resources>").append("\n");
-		for (int i = 0; i <= 1024; i++) {
+		for (int i = 0; i <= 2560; i++) {
 			builder.append("\t");
 			builder.append(String.format(baseStr, i, (int) (i * scale)));
 			builder.append("\n");
