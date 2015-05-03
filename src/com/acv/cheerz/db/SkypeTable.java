@@ -28,19 +28,23 @@ public abstract class SkypeTable {
 	private int USER_MATCHER = 1;
 	private int USER_MATCHER_ID = 2;
 
-	private void init(Context context, int index) {
+	private void init(Context context, int index, String providerName) {
 		tableName = getClass().getSimpleName();
 		this.context = context;
 		USER_MATCHER = index * 10 + 1;
 		USER_MATCHER_ID = index * 10 + 2;
-		urlString = "content://" + DBProvider.PROVIDER_NAME + "/" + tableName;
+		urlString = "content://" + providerName + "/" + tableName;
 		contentUri = Uri.parse(urlString);
 
 		addColumns(_ID);
 	}
 
-	public SkypeTable(Context context) {
-		init(context, getIndex());
+	/**
+	 * 
+	 * @param context
+	 */
+	public SkypeTable(Context context, Class<DBProvider> provider) {
+		init(context, getIndex(), provider.getName());
 	}
 
 	public Context getContext() {
@@ -176,4 +180,5 @@ public abstract class SkypeTable {
 	public Cursor querry(String where) {
 		return context.getContentResolver().query(getContentUri(), null, where, null, null);
 	}
+
 }

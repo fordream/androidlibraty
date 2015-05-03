@@ -10,8 +10,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
-public class DBProvider extends ContentProvider {
-	public static final String PROVIDER_NAME = "org.com.atmarkcafe.sky.DBProvider";
+public abstract class DBProvider extends ContentProvider {
+	// public static final String PROVIDER_NAME =
+	// "org.com.atmarkcafe.sky.DBProvider";
 
 	public DBProvider() {
 		super();
@@ -25,16 +26,18 @@ public class DBProvider extends ContentProvider {
 	@Override
 	public boolean onCreate() {
 		databaseHelper = new DBDatabaseHelper(getContext());
-
+		addTable(databaseHelper);
 		db = databaseHelper.getWritableDatabase();
 
 		if (uriMatcher == null) {
 			uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-			databaseHelper.addUriMatcher(uriMatcher, PROVIDER_NAME);
+			databaseHelper.addUriMatcher(uriMatcher, getClass().getName());
 		}
 
 		return (db == null) ? false : true;
 	}
+
+	public abstract void addTable(DBDatabaseHelper databaseHelper2);
 
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {

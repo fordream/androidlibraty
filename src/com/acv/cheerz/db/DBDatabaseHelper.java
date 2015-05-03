@@ -20,7 +20,7 @@ public class DBDatabaseHelper extends SQLiteOpenHelper {
 
 	public DBDatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
-		addTable(new IDOL(context));
+//		addTable(new IDOL(context));
 	}
 
 	@Override
