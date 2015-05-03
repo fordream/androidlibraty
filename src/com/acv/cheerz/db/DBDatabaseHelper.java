@@ -16,9 +16,8 @@ public class DBDatabaseHelper extends SQLiteOpenHelper {
 	private List<SkypeTable> list = new ArrayList<SkypeTable>();
 	private static final String DATABASE_NAME = "midb";
 
-	private static final int DATABASE_VERSION = 5;
 
-	public DBDatabaseHelper(Context context) {
+	public DBDatabaseHelper(Context context, int DATABASE_VERSION) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 //		addTable(new IDOL(context));
 	}

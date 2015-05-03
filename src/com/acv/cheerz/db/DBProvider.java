@@ -25,7 +25,7 @@ public abstract class DBProvider extends ContentProvider {
 
 	@Override
 	public boolean onCreate() {
-		databaseHelper = new DBDatabaseHelper(getContext());
+		databaseHelper = new DBDatabaseHelper(getContext(), getVersionDB());
 		addTable(databaseHelper);
 		db = databaseHelper.getWritableDatabase();
 
@@ -38,6 +38,8 @@ public abstract class DBProvider extends ContentProvider {
 	}
 
 	public abstract void addTable(DBDatabaseHelper databaseHelper2);
+
+	public abstract int getVersionDB();
 
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
