@@ -43,7 +43,7 @@ public abstract class SkypeTable {
 	 * 
 	 * @param context
 	 */
-	public SkypeTable(Context context, Class<DBProvider> provider) {
+	public SkypeTable(Context context, Class provider) {
 		init(context, getIndex(), provider.getName());
 	}
 
