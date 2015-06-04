@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import com.vnp.core.common.CommonAndroid;
+import com.vnp.core.common.LogUtils;
 
 public abstract class SkypeTable {
 	public static final String _ID = "_id";
@@ -29,11 +30,10 @@ public abstract class SkypeTable {
 	private int USER_MATCHER_ID = 2;
 
 	private void init(Context context, int index, String providerName) {
-		tableName = getClass().getSimpleName();
 		this.context = context;
-		USER_MATCHER = index * 10 + 1;
-		USER_MATCHER_ID = index * 10 + 2;
-		urlString = "content://" + providerName + "/" + tableName;
+		USER_MATCHER = Math.abs(index + 1);
+		USER_MATCHER_ID = Math.abs(index + 2);
+		urlString = "content://" + providerName + "/" + getTableName();
 		contentUri = Uri.parse(urlString);
 
 		addColumns(_ID);
@@ -59,7 +59,6 @@ public abstract class SkypeTable {
 		return contentUri;
 	}
 
-	private String tableName = "";
 	private Map<String, String> map = new HashMap<String, String>();
 
 	public void addColumns(String columnName) {
@@ -74,7 +73,7 @@ public abstract class SkypeTable {
 
 	public final String createDbTable() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("CREATE TABLE ").append(tableName);
+		builder.append("CREATE TABLE ").append(getTableName());
 		builder.append("(");
 
 		Set<String> keys = map.keySet();
@@ -96,8 +95,8 @@ public abstract class SkypeTable {
 	}
 
 	public void addUriMatcher(UriMatcher uriMatcher, String PROVIDER_NAME) {
-		uriMatcher.addURI(PROVIDER_NAME, tableName, USER_MATCHER);
-		uriMatcher.addURI(PROVIDER_NAME, tableName + "/#", USER_MATCHER_ID);
+		uriMatcher.addURI(PROVIDER_NAME, getTableName(), USER_MATCHER);
+		uriMatcher.addURI(PROVIDER_NAME, getTableName() + "/#", USER_MATCHER_ID);
 	}
 
 	public void getType(Map<Integer, String> mMap) {
@@ -107,9 +106,9 @@ public abstract class SkypeTable {
 
 	public int update(int match, SQLiteDatabase db, Uri uri, ContentValues values, String selection, String[] selectionArgs) {
 		if (USER_MATCHER == match) {
-			return db.update(tableName, values, selection, selectionArgs);
+			return db.update(getTableName(), values, selection, selectionArgs);
 		} else if (USER_MATCHER_ID == match) {
-			return db.update(tableName, values, "_id = " + uri.getPathSegments().get(1) + (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""), selectionArgs);
+			return db.update(getTableName(), values, "_id = " + uri.getPathSegments().get(1) + (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""), selectionArgs);
 		} else {
 			return -2;
 		}
@@ -117,10 +116,10 @@ public abstract class SkypeTable {
 
 	public int delete(int match, SQLiteDatabase db, Uri uri, String selection, String[] selectionArgs) {
 		if (USER_MATCHER == match) {
-			return db.delete(tableName, selection, selectionArgs);
+			return db.delete(getTableName(), selection, selectionArgs);
 		} else if (USER_MATCHER_ID == match) {
 			String id = uri.getPathSegments().get(1);
-			return db.delete(tableName, "_id = " + id + (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""), selectionArgs);
+			return db.delete(getTableName(), "_id = " + id + (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : ""), selectionArgs);
 		} else {
 			return -2;
 		}
@@ -128,7 +127,7 @@ public abstract class SkypeTable {
 
 	public Cursor query(int match, SQLiteDatabase db, Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-		qb.setTables(tableName);
+		qb.setTables(getTableName());
 		if (USER_MATCHER == match) {
 			return qb.query(db, projection, selection, selectionArgs, null, null, sortOrder);
 		} else if (USER_MATCHER_ID == match) {
@@ -141,13 +140,13 @@ public abstract class SkypeTable {
 
 	public Uri insert(int match, SQLiteDatabase db, Uri uri, ContentValues values) {
 		if (USER_MATCHER == match) {
-			long rowID = db.insert(tableName, "", values);
+			long rowID = db.insert(getTableName(), "", values);
 			if (rowID > 0) {
 				Uri _uri = ContentUris.withAppendedId(getContentUri(), rowID);
 				return _uri;
 			}
 		} else if (USER_MATCHER_ID == match) {
-			long rowID = db.insert(tableName, "", values);
+			long rowID = db.insert(getTableName(), "", values);
 			if (rowID > 0) {
 				Uri _uri = ContentUris.withAppendedId(getContentUri(), rowID);
 				return _uri;
@@ -158,7 +157,7 @@ public abstract class SkypeTable {
 	}
 
 	public String getTableName() {
-		return tableName;
+		return getClass().getSimpleName();
 	}
 
 	public final int getIndex() {

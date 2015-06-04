@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.vnp.core.common.LogUtils;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
@@ -16,10 +18,9 @@ public class DBDatabaseHelper extends SQLiteOpenHelper {
 	private List<SkypeTable> list = new ArrayList<SkypeTable>();
 	private static final String DATABASE_NAME = "midb";
 
-
 	public DBDatabaseHelper(Context context, int DATABASE_VERSION) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
-//		addTable(new IDOL(context));
+		// addTable(new IDOL(context));
 	}
 
 	@Override
