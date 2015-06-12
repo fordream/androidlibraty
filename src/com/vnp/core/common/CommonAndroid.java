@@ -21,11 +21,6 @@ import java.util.zip.ZipFile;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.ict.library.R;
-import com.vnp.core.service.RequestMethod;
-import com.vnp.core.service.RestClient;
-import com.vnp.core.service.RestClientCallBack;
-
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
@@ -95,6 +90,10 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.vnp.core.service.RequestMethod;
+import com.vnp.core.service.RestClient;
+import com.vnp.core.service.RestClientCallBack;
 
 @SuppressLint("NewApi")
 public class CommonAndroid {
@@ -1704,5 +1703,29 @@ public class CommonAndroid {
 		public void onActivityStopped(Fragment f, Context context) {
 			saveSharedPreferences(f, context, null, FragmentStateEnum.onActivityStopped);
 		}
+	}
+
+	public static Bitmap getScaledBitmap(Bitmap b, int reqWidth, int reqHeight) {
+
+		int value = 0;
+		if (b.getHeight() <= b.getWidth()) {
+			value = b.getHeight();
+		} else {
+			value = b.getWidth();
+		}
+		b = Bitmap.createBitmap(b, 0, 0, value, value);
+
+		int bWidth = b.getWidth();
+		int bHeight = b.getHeight();
+
+		int nWidth = reqWidth;
+		int nHeight = reqHeight;
+
+		float parentRatio = (float) reqHeight / reqWidth;
+
+		nHeight = bHeight;
+		nWidth = (int) (reqWidth * parentRatio);
+
+		return Bitmap.createScaledBitmap(b, nWidth, nHeight, true);
 	}
 }
