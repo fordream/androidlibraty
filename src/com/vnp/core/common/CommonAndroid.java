@@ -1717,9 +1717,9 @@ public class CommonAndroid {
 
 		int startX = (b.getWidth() - width) / 2;
 		int startY = (b.getHeight() - width) / 2;
-		b = Bitmap.createBitmap(b, startX, startY, startX + width, startY + width);
+		b = Bitmap.createBitmap(b, startX, startY, width, width);
 
-		// scale bitmap
+		// // scale bitmap
 		int bWidth = b.getWidth();
 		int bHeight = b.getHeight();
 
@@ -1730,6 +1730,8 @@ public class CommonAndroid {
 
 		nHeight = bHeight;
 		nWidth = (int) (reqWidth * parentRatio);
+		nHeight = nWidth;
 		return Bitmap.createScaledBitmap(b, nWidth, nHeight, true);
+		// return b;
 	}
 }
