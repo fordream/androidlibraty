@@ -1707,14 +1707,19 @@ public class CommonAndroid {
 
 	public static Bitmap getScaledBitmap(Bitmap b, int reqWidth, int reqHeight) {
 
-		int value = 0;
+		// crop image
+		int width = 0;
 		if (b.getHeight() <= b.getWidth()) {
-			value = b.getHeight();
+			width = b.getHeight();
 		} else {
-			value = b.getWidth();
+			width = b.getWidth();
 		}
-		b = Bitmap.createBitmap(b, 0, 0, value, value);
 
+		int startX = (b.getWidth() - width) / 2;
+		int startY = (b.getHeight() - width) / 2;
+		b = Bitmap.createBitmap(b, startX, startY, startX + width, startY + width);
+
+		// scale bitmap
 		int bWidth = b.getWidth();
 		int bHeight = b.getHeight();
 
@@ -1725,7 +1730,6 @@ public class CommonAndroid {
 
 		nHeight = bHeight;
 		nWidth = (int) (reqWidth * parentRatio);
-
 		return Bitmap.createScaledBitmap(b, nWidth, nHeight, true);
 	}
 }
