@@ -54,9 +54,12 @@ public abstract class AndEngineGameActivty extends BaseGameActivity implements I
 	/**
 	 * Camera
 	 */
-	private Camera mCamera = new Camera(0, 0, 960, 640);
+	private Camera mCamera = null;
 
-	public Camera getmCamera() {
+	public Camera getCamera() {
+		if (mCamera == null) {
+			mCamera = new Camera(0, 0, isLandscape() ? 960 : 640, isLandscape() ? 640 : 960);
+		}
 		return mCamera;
 	}
 
@@ -65,6 +68,11 @@ public abstract class AndEngineGameActivty extends BaseGameActivity implements I
 		final Display display = getWindowManager().getDefaultDisplay();
 		int cameraWidth = display.getWidth();
 		int cameraHeight = display.getHeight();
-		return new Engine(new EngineOptions(true, ScreenOrientation.LANDSCAPE, new RatioResolutionPolicy(cameraWidth, cameraHeight), mCamera).setNeedsSound(true).setNeedsMusic(true));
+		return new Engine(new EngineOptions(true, isLandscape() ? ScreenOrientation.LANDSCAPE : ScreenOrientation.PORTRAIT, new RatioResolutionPolicy(cameraWidth, cameraHeight), getCamera())
+				.setNeedsSound(true).setNeedsMusic(true));
+	}
+
+	public boolean isLandscape() {
+		return true;
 	}
 }
