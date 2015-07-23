@@ -35,7 +35,7 @@ public abstract class AndEngineGameActivty extends BaseGameActivity implements I
 	 */
 	private Scene mMainScene;
 
-	public Scene getmMainScene() {
+	public Scene getMainScene() {
 		return mMainScene;
 	}
 
