@@ -5,25 +5,24 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpMessage;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.entity.mime.Header;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
@@ -32,10 +31,10 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
-import com.vnp.core.common.CommonAndroid;
-
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
-import android.util.Log;
 
 public class RestClient {
 
@@ -524,6 +523,48 @@ public class RestClient {
 		 */
 		public void onProcess(long total, long curent);
 
+	}
+
+	/**
+	 * 
+	 * @param userId
+	 */
+	public interface IFacebookAvatarCallBack {
+
+		/**
+		 * 
+		 */
+		public void onStart();
+
+		public void onSsucess(Bitmap bitmap);
+
+	}
+
+	/**
+	 * 
+	 * @param userId
+	 * @param facebookAvatarCallBack
+	 */
+	public void executeLoadAvatarFacebook(final String userId, final IFacebookAvatarCallBack facebookAvatarCallBack) {
+		facebookAvatarCallBack.onStart();
+		new AsyncTask<String, String, String>() {
+			Bitmap mIcon1;
+
+			@Override
+			protected String doInBackground(String... params) {
+				String image = "https://graph.facebook.com/" + userId + "/picture?type=large";
+				try {
+					mIcon1 = BitmapFactory.decodeStream(new URL(image).openConnection().getInputStream());
+				} catch (MalformedURLException e) {
+				} catch (IOException e) {
+				}
+				return null;
+			}
+
+			protected void onPostExecute(String result) {
+				facebookAvatarCallBack.onSsucess(mIcon1);
+			};
+		}.execute("");
 	}
 }
 
