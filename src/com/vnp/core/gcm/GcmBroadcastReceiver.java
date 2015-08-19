@@ -99,12 +99,13 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 		 * @param deviceId
 		 */
 		public void onCallBack(String registerId, String deviceId);
+
+		public void onStart();
 	}
 
 	public static final void registerCallBackRegisterId(final Context context, final RegisterCallBackRegisterId registerCallBackRegisterId) {
-		final SharedPreferences preferences = context.getSharedPreferences(TAG, 0);
+		registerCallBackRegisterId.onStart();
 		final String SENDER_ID = "498720258430";// "27284071298";//609478506422
-		final String SERVER = "http://vnpmanager.esy.es/gcm/register.php";
 
 		new AsyncTask<Void, Void, String>() {
 			String registerId;
