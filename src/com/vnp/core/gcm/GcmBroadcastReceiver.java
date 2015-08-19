@@ -49,34 +49,7 @@ import android.provider.Settings.Secure;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-
-/**
- * 
- * @author tvuong1pc
- * @see
- * 
- *      <uses-permission android:name="android.permission.GET_ACCOUNTS" />
- *      <uses-permission android:name="android.permission.WAKE_LOCK" />
- * 
- *      <permission android:name="vnp.mr.mintmedical.permission.C2D_MESSAGE"
- *      android:protectionLevel="signature" />
- * 
- *      <uses-permission
- *      android:name="vnp.mr.mintmedical.permission.C2D_MESSAGE" />
- *      <uses-permission
- *      android:name="com.google.android.c2dm.permission.RECEIVE" />
- * 
- * 
- * 
- *      <receiver android:name=".GcmBroadcastReceiver"
- *      android:permission="com.google.android.c2dm.permission.SEND" >
- *      <intent-filter> <action
- *      android:name="com.google.android.c2dm.intent.RECEIVE" /> <category
- *      android:name="app.bynal.woman" /> </intent-filter> </receiver>
- * 
- *      <activity android:name=".PushDialogActivity"
- *      android:theme="@android:style/Theme.Dialog" > </activity>
- */
+//com.vnp.core.gcm.GcmBroadcastReceiver
 public class GcmBroadcastReceiver extends BroadcastReceiver {
 	static final String TAG = "GCMDemo";
 	public static final int NOTIFICATION_ID = 1;
