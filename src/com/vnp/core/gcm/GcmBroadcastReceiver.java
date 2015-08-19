@@ -43,6 +43,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.provider.Settings.Secure;
 import android.support.v4.app.NotificationCompat;
@@ -103,6 +104,19 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 		public void onStart();
 	}
 
+	public static final String getRegisterId(Context context) {
+		final String TAG = "getRegisterId";
+		final SharedPreferences preferences = context.getSharedPreferences(TAG, 0);
+		return preferences.getString(TAG, null);
+	}
+
+	private static final void saveRegisterId(Context context, String getRegisterId) {
+		final String TAG = "getRegisterId";
+		final Editor preferences = context.getSharedPreferences(TAG, 0).edit();
+		preferences.putString(TAG, getRegisterId);
+		preferences.commit();
+	}
+
 	public static final void registerCallBackRegisterId(final Context context, final RegisterCallBackRegisterId registerCallBackRegisterId) {
 		registerCallBackRegisterId.onStart();
 		final String SENDER_ID = "498720258430";// "27284071298";//609478506422
@@ -117,6 +131,7 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 					GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
 					registerId = gcm.register(SENDER_ID);
 					deviceId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
+					saveRegisterId(context, registerId);
 				} catch (Exception ex) {
 
 				}
@@ -148,6 +163,8 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 						client.addHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 						client.addParam("name", deviceId);
 						client.addParam("regId", regid);
+
+						saveRegisterId(context, regid);
 						try {
 							client.execute(RequestMethod.GET);
 							if (client.getResponse().equals("200")) {
