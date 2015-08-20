@@ -538,6 +538,7 @@ public class RestClient {
 
 		public void onSsucess(Bitmap bitmap);
 
+		public void onSsucessInBackground(Bitmap bitmap);
 	}
 
 	/**
@@ -558,6 +559,7 @@ public class RestClient {
 				} catch (MalformedURLException e) {
 				} catch (IOException e) {
 				}
+				facebookAvatarCallBack.onSsucessInBackground(mIcon1);
 				return null;
 			}
 
