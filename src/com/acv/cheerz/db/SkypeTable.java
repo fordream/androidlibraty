@@ -47,7 +47,10 @@ public abstract class SkypeTable {
 		init(context, getIndex(), provider.getName());
 	}
 
-	public Context getContext() {
+	public Set<String> getColumns(){
+		return map.keySet();
+	}
+ 	public Context getContext() {
 		return context;
 	}
 
