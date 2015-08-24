@@ -15,6 +15,8 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -28,6 +30,8 @@ import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.ict.library.R;
@@ -35,6 +39,48 @@ import com.vnp.core.service.HttpsRestClient;
 import com.vnp.core.service.RequestMethod;
 
 public class ImageLoader {
+	public void display(Activity activityOrViewOrDialod, int resId, int resImgBase, String url, boolean isRound) {
+		ImageView imgv = null;
+		if (CommonAndroid.getView(activityOrViewOrDialod, resId) instanceof ImageView) {
+			imgv = CommonAndroid.getView(activityOrViewOrDialod, resId);
+		}
+
+		if (imgv != null) {
+			if (resImgBase > 0) {
+				imgv.setImageResource(resImgBase);
+			}
+			displayImage(url, imgv, isRound);
+		}
+	}
+
+	public void display(View activityOrViewOrDialod, int resId, int resImgBase, String url, boolean isRound) {
+		ImageView imgv = null;
+		if (CommonAndroid.getView(activityOrViewOrDialod, resId) instanceof ImageView) {
+			imgv = CommonAndroid.getView(activityOrViewOrDialod, resId);
+		}
+
+		if (imgv != null) {
+			if (resImgBase > 0) {
+				imgv.setImageResource(resImgBase);
+			}
+			displayImage(url, imgv, isRound);
+		}
+	}
+
+	public void display(Dialog activityOrViewOrDialod, int resId, int resImgBase, String url, boolean isRound) {
+		ImageView imgv = null;
+		if (CommonAndroid.getView(activityOrViewOrDialod, resId) instanceof ImageView) {
+			imgv = CommonAndroid.getView(activityOrViewOrDialod, resId);
+		}
+
+		if (imgv != null) {
+			if (resImgBase > 0) {
+				imgv.setImageResource(resImgBase);
+			}
+			displayImage(url, imgv, isRound);
+		}
+	}
+
 	public void displayImageCover(String url, ImageView imageView) {
 		if (!CommonAndroid.isBlank(url)) {
 			displayImage(url, imageView, false);
@@ -50,7 +96,6 @@ public class ImageLoader {
 	public void showLogoTinTuc(ImageView tintuc_item_img_icon, String images) {
 		tintuc_item_img_icon.setImageResource(R.drawable.btn_crop_operator);
 		displayImage(images, tintuc_item_img_icon, false);
-
 	}
 
 	// **
