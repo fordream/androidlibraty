@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.json.JSONObject;
+
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -186,5 +188,34 @@ public abstract class SkypeTable {
 
 	public Cursor querry(String where, String order) {
 		return context.getContentResolver().query(getContentUri(), null, where, null, order);
+	}
+
+	public void insert(ContentValues values) {
+		if (getContext() != null) {
+			getContext().getContentResolver().insert(getContentUri(), values);
+		}
+	}
+
+	public void update(ContentValues values, String where) {
+		if (getContext() != null) {
+			getContext().getContentResolver().update(getContentUri(), values, where, null);
+		}
+	}
+
+	public void add(JSONObject object) {
+		ContentValues values = new ContentValues();
+		try {
+			Set<String> colums = getColumns();
+			for (String column : colums) {
+				if (object.has(column)) {
+					values.put(column, object.getString(column));
+				}
+			}
+
+			insert(values);
+
+		} catch (Exception ex) {
+			LogUtils.e("SkypeTable", ex);
+		}
 	}
 }
