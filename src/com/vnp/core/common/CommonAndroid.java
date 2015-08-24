@@ -28,6 +28,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.app.KeyguardManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ActivityNotFoundException;
@@ -119,6 +120,144 @@ public class CommonAndroid {
 			}
 		}
 
+	}
+
+	/**
+	 * 
+	 * @param text
+	 * @param str
+	 */
+	public static void setText(TextView text, String str) {
+		if (text != null)
+			text.setText(str);
+	}
+
+	/**
+	 * 
+	 * @param text
+	 * @param cursor
+	 * @param key
+	 */
+	public static void setText(TextView text, Cursor cursor, String key) {
+		if (text != null)
+			text.setText(getString(cursor, key));
+	}
+
+	/**
+	 * 
+	 * @param text
+	 * @param cursor
+	 * @param key
+	 */
+	public static void setText(TextView text, JSONObject cursor, String key) {
+		if (text != null)
+			text.setText(getString(cursor, key));
+	}
+
+	/**
+	 * 
+	 * @param activity
+	 * @param res
+	 * @param text
+	 */
+	public static void setText(Activity activity, int res, String text) {
+		TextView textView = getView(activity, res);
+		setText(textView, text);
+	}
+
+	/**
+	 * 
+	 * @param activity
+	 * @param res
+	 * @param text
+	 */
+	public static void setText(View activity, int res, String text) {
+		TextView textView = getView(activity, res);
+		setText(textView, text);
+	}
+
+	/**
+	 * 
+	 * @param activity
+	 * @param res
+	 * @param text
+	 */
+	public static void setText(Dialog activity, int res, String text) {
+		TextView textView = getView(activity, res);
+		setText(textView, text);
+	}
+
+	/**
+	 * 
+	 * @param activity
+	 * @param res
+	 * @param cursor
+	 * @param key
+	 */
+
+	public static void setText(Activity activity, int res, Cursor cursor, String key) {
+		TextView textView = getView(activity, res);
+		setText(textView, getString(cursor, key));
+	}
+
+	/**
+	 * 
+	 * @param activity
+	 * @param res
+	 * @param cursor
+	 * @param key
+	 */
+	public static void setText(View activity, int res, Cursor cursor, String key) {
+		TextView textView = getView(activity, res);
+		setText(textView, getString(cursor, key));
+	}
+
+	/**
+	 * 
+	 * @param activity
+	 * @param res
+	 * @param cursor
+	 * @param key
+	 */
+	public static void setText(Dialog activity, int res, Cursor cursor, String key) {
+		TextView textView = getView(activity, res);
+		setText(textView, getString(cursor, key));
+	}
+
+	/**
+	 * 
+	 * @param activity
+	 * @param res
+	 * @param cursor
+	 * @param key
+	 */
+	public static void setText(Activity activity, int res, JSONObject cursor, String key) {
+		TextView textView = getView(activity, res);
+		setText(textView, getString(cursor, key));
+	}
+
+	/**
+	 * 
+	 * @param activity
+	 * @param res
+	 * @param cursor
+	 * @param key
+	 */
+	public static void setText(View activity, int res, JSONObject cursor, String key) {
+		TextView textView = getView(activity, res);
+		setText(textView, getString(cursor, key));
+	}
+
+	/**
+	 * 
+	 * @param activity
+	 * @param res
+	 * @param cursor
+	 * @param key
+	 */
+	public static void setText(Dialog activity, int res, JSONObject cursor, String key) {
+		TextView textView = getView(activity, res);
+		setText(textView, getString(cursor, key));
 	}
 
 	/**
@@ -451,6 +590,11 @@ public class CommonAndroid {
 	 * @return
 	 */
 	public static <T extends View> T getView(View v, int res) {
+		T t = (T) v.findViewById(res);
+		return t;
+	}
+
+	public static <T extends View> T getView(Dialog v, int res) {
 		T t = (T) v.findViewById(res);
 		return t;
 	}
