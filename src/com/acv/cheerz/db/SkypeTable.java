@@ -47,10 +47,11 @@ public abstract class SkypeTable {
 		init(context, getIndex(), provider.getName());
 	}
 
-	public Set<String> getColumns(){
+	public Set<String> getColumns() {
 		return map.keySet();
 	}
- 	public Context getContext() {
+
+	public Context getContext() {
 		return context;
 	}
 
@@ -183,4 +184,7 @@ public abstract class SkypeTable {
 		return context.getContentResolver().query(getContentUri(), null, where, null, null);
 	}
 
+	public Cursor querry(String where, String order) {
+		return context.getContentResolver().query(getContentUri(), null, where, null, order);
+	}
 }
