@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.ContentUris;
@@ -239,6 +240,15 @@ public abstract class SkypeTable {
 		}
 	}
 
+	public void add(JSONArray object) {
+		try {
+			for (int i = 0; i < object.length(); i++) {
+				add(object.getJSONObject(i));
+			}
+		} catch (Exception ex) {
+		}
+	}
+
 	/**
 	 * 
 	 * @param where
@@ -267,7 +277,7 @@ public abstract class SkypeTable {
 				if (jsonObject.has(column)) {
 					values.put(column, jsonObject.getString(column));
 				}
-				
+
 			}
 			return values;
 		} catch (Exception ex) {
@@ -276,8 +286,7 @@ public abstract class SkypeTable {
 		return null;
 
 	}
-	
-	
+
 	public ContentValues createContentValuesFormJsonObject(JSONObject jsonObject) {
 
 		try {
@@ -287,13 +296,12 @@ public abstract class SkypeTable {
 				if (jsonObject.has(column)) {
 					values.put(column, jsonObject.getString(column));
 				}
-				
+
 			}
 			return values;
 		} catch (Exception ex) {
 		}
 
 		return null;
-
 	}
 }
