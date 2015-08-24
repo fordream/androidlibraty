@@ -218,4 +218,24 @@ public abstract class SkypeTable {
 			LogUtils.e("SkypeTable", ex);
 		}
 	}
+
+	public void add(JSONObject object, String where) {
+		ContentValues values = new ContentValues();
+		try {
+			Set<String> colums = getColumns();
+			for (String column : colums) {
+				if (object.has(column)) {
+					values.put(column, object.getString(column));
+				}
+			}
+			if (has(where)) {
+				update(values, where);
+			} else {
+				insert(values);
+			}
+
+		} catch (Exception ex) {
+			LogUtils.e("SkypeTable", ex);
+		}
+	}
 }
