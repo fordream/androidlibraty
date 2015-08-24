@@ -276,4 +276,24 @@ public abstract class SkypeTable {
 		return null;
 
 	}
+	
+	
+	public ContentValues createContentValuesFormJsonObject(JSONObject jsonObject) {
+
+		try {
+			ContentValues values = new ContentValues();
+			Set<String> colums = getColumns();
+			for (String column : colums) {
+				if (jsonObject.has(column)) {
+					values.put(column, jsonObject.getString(column));
+				}
+				
+			}
+			return values;
+		} catch (Exception ex) {
+		}
+
+		return null;
+
+	}
 }
