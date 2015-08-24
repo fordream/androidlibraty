@@ -267,6 +267,7 @@ public abstract class SkypeTable {
 				if (jsonObject.has(column)) {
 					values.put(column, jsonObject.getString(column));
 				}
+				
 			}
 			return values;
 		} catch (Exception ex) {
