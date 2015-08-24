@@ -238,4 +238,22 @@ public abstract class SkypeTable {
 			LogUtils.e("SkypeTable", ex);
 		}
 	}
+
+	/**
+	 * 
+	 * @param where
+	 * @param columName
+	 * @return
+	 */
+	public String getValueByName(String where, String columName) {
+		String SchoolName = null;
+		Cursor cursor = querry(where);
+		if (cursor != null) {
+			if (cursor.moveToNext()) {
+				SchoolName = CommonAndroid.getString(cursor, columName);
+			}
+			cursor.close();
+		}
+		return SchoolName;
+	}
 }
