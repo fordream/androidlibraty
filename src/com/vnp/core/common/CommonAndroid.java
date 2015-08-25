@@ -99,33 +99,6 @@ import com.vnp.core.service.RestClientCallBack;
 @SuppressLint("NewApi")
 public class CommonAndroid {
 
-	/**
-	 * 
-	 * @param bitmat
-	 * @param maxWidthOrHight
-	 * @return
-	 */
-	public static Bitmap scaleBitmap(Bitmap bitmat, int maxWidthOrHight) {
-		try {
-
-			int width = bitmat.getWidth();
-			int height = bitmat.getHeight();
-
-			int mWidth = 0;
-			int mHight = 0;
-			if (width > height) {
-				mWidth = maxWidthOrHight;
-				mHight = mWidth * height / width;
-			} else {
-				mHight = maxWidthOrHight;
-				mWidth = mHight * width / height;
-			}
-			return Bitmap.createScaledBitmap(bitmat, mWidth, mHight, false);
-		} catch (Exception bitmap) {
-			return bitmat;
-		}
-	}
-
 	public static Bitmap base64ToBitmap(String myImageData) {
 		byte[] imageAsBytes = Base64.decode(myImageData, Base64.DEFAULT);
 		return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
