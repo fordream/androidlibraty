@@ -14,7 +14,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.Normalizer;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -30,6 +32,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.AlertDialog.Builder;
+import android.app.Application;
 import android.app.Dialog;
 import android.app.KeyguardManager;
 import android.bluetooth.BluetoothAdapter;
@@ -83,6 +86,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -1032,35 +1036,62 @@ public class CommonAndroid {
 	// FONT
 	// ============================================================================
 	public static class FONT {
-		public static final String PATH = "src/org/com/cnc/common/android/font/";
-		public static final String BRADHITC = "BRADHITC.TTF";
-		public static final String AGENCYB = "AGENCYB.TTF";
-		public static final String BROADW = "BROADW.TTF";
-		public static final String ALGER = "ALGER.TTF";
+		private FONT instance = new FONT();
+		private Application application;
 
-		public static void setTypeface(TextView tv, String fileAsset) {
-			try {
-				File file = new File(PATH + fileAsset);
-				Log.i("file", file.exists() + "");
-				Typeface tf = Typeface.createFromFile(file);
-				tv.setTypeface(tf);
-			} catch (Exception e) {
+		public void init(Application application) {
+			this.application = application;
+		}
+
+		private FONT() {
+		}
+
+		private Map<String, Typeface> typeFaces = new HashMap<String, Typeface>();
+
+		public void addTypeFaces(String assetPath) {
+			if (!typeFaces.containsKey(typeFaces)) {
+				AssetManager assertManager = application.getAssets();
+				Typeface tf = Typeface.createFromAsset(assertManager, assetPath);
+				if (tf != null) {
+					typeFaces.put(assetPath, tf);
+				}
 			}
 		}
 
-		public static void setTypefaceFromAsset(TextView tv, String fileAsset) {
-			try {
-				AssetManager assertManager = tv.getContext().getAssets();
-				Typeface tf = Typeface.createFromAsset(assertManager, fileAsset);
-				tv.setTypeface(tf);
-			} catch (Exception e) {
-			}
+		public void addTypeFace(TextView textView, String assetPath) {
+			addTypeFaces(assetPath);
+			Typeface tf = typeFaces.get(assetPath);
+			if (tf != null)
+				textView.setTypeface(tf);
 		}
 
-		public static void main(String[] args) {
-			File file = new File(PATH + ALGER);
-			System.out.println(file.exists());
-		}
+		// public public static final String PATH =
+		// "src/org/com/cnc/common/android/font/";
+
+		// public static final String BRADHITC = "BRADHITC.TTF";
+		// public static final String AGENCYB = "AGENCYB.TTF";
+		// public static final String BROADW = "BROADW.TTF";
+		// public static final String ALGER = "ALGER.TTF";
+
+		// public void setTypeface(TextView tv, String fileAsset) {
+		// try {
+		// File file = new File(PATH + fileAsset);
+		// Log.i("file", file.exists() + "");
+		// Typeface tf = Typeface.createFromFile(file);
+		// tv.setTypeface(tf);
+		// } catch (Exception e) {
+		// }
+		// }
+
+		// public void setTypefaceFromAsset(TextView tv, String fileAsset) {
+		// try {
+		// AssetManager assertManager = tv.getContext().getAssets();
+		// Typeface tf = Typeface.createFromAsset(assertManager, fileAsset);
+		// tv.setTypeface(tf);
+		// } catch (Exception e) {
+		// }
+		// }
+
 	}
 
 	// ============================================================================
