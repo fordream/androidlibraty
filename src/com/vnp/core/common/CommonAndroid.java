@@ -1036,8 +1036,12 @@ public class CommonAndroid {
 	// FONT
 	// ============================================================================
 	public static class FONT {
-		private FONT instance = new FONT();
+		private static FONT instance = new FONT();
 		private Application application;
+
+		public static FONT getInstance() {
+			return instance;
+		}
 
 		public void init(Application application) {
 			this.application = application;
