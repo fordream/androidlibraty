@@ -1069,10 +1069,13 @@ public class CommonAndroid {
 		}
 
 		public void setTypeFace(TextView textView, String assetPath) {
-			addTypeFaces(assetPath);
-			Typeface tf = typeFaces.get(assetPath);
-			if (tf != null)
-				textView.setTypeface(tf);
+			try {
+				addTypeFaces(assetPath);
+				Typeface tf = typeFaces.get(assetPath);
+				if (tf != null)
+					textView.setTypeface(tf);
+			} catch (Exception ex) {
+			}
 		}
 
 		// public public static final String PATH =
