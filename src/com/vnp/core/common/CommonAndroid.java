@@ -7,6 +7,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.security.MessageDigest;
@@ -14,6 +15,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.Normalizer;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -98,6 +100,23 @@ import com.vnp.core.service.RestClientCallBack;
 
 @SuppressLint("NewApi")
 public class CommonAndroid {
+	public static void saveToFile(Bundle extras, String fileName) {
+		StringBuilder report = new StringBuilder();
+		Set<String> keys = extras.keySet();
+		for (String key : keys) {
+			report.append(key).append(":\n");
+			report.append(extras.getString(key));
+			report.append("\n");
+		}
+
+		try {
+			FileOutputStream trace = new FileOutputStream(new File(fileName));
+			trace.write(report.toString().getBytes());
+			trace.close();
+		} catch (IOException ioe) {
+		}
+
+	}
 
 	public static Bitmap base64ToBitmap(String myImageData) {
 		byte[] imageAsBytes = Base64.decode(myImageData, Base64.DEFAULT);
