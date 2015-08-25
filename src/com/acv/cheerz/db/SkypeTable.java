@@ -203,6 +203,12 @@ public abstract class SkypeTable {
 		}
 	}
 
+	public void delete(String where) {
+		if (getContext() != null) {
+			getContext().getContentResolver().delete(getContentUri(), where, null);
+		}
+	}
+
 	public void add(JSONObject object) {
 		ContentValues values = new ContentValues();
 		try {
