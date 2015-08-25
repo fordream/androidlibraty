@@ -100,6 +100,11 @@ import com.vnp.core.service.RestClientCallBack;
 
 @SuppressLint("NewApi")
 public class CommonAndroid {
+	/**
+	 * 
+	 * @param extras
+	 * @param fileName
+	 */
 	public static void saveToFile(Bundle extras, String fileName) {
 		StringBuilder report = new StringBuilder();
 		Set<String> keys = extras.keySet();
@@ -108,14 +113,21 @@ public class CommonAndroid {
 			report.append(extras.getString(key));
 			report.append("\n");
 		}
+		saveToFile(report.toString(), fileName);
+	}
 
+	/**
+	 * 
+	 * @param extras
+	 * @param fileName
+	 */
+	public static void saveToFile(String extras, String fileName) {
 		try {
 			FileOutputStream trace = new FileOutputStream(new File(fileName));
-			trace.write(report.toString().getBytes());
+			trace.write(extras.toString().getBytes());
 			trace.close();
 		} catch (IOException ioe) {
 		}
-
 	}
 
 	public static Bitmap base64ToBitmap(String myImageData) {
