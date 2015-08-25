@@ -1052,17 +1052,23 @@ public class CommonAndroid {
 
 		private Map<String, Typeface> typeFaces = new HashMap<String, Typeface>();
 
-		public void addTypeFaces(String assetPath) {
+		public boolean addTypeFaces(String assetPath) {
+			boolean success = false;
 			if (!typeFaces.containsKey(typeFaces)) {
 				AssetManager assertManager = application.getAssets();
 				Typeface tf = Typeface.createFromAsset(assertManager, assetPath);
 				if (tf != null) {
 					typeFaces.put(assetPath, tf);
+					success = true;
 				}
+			} else {
+				success = true;
 			}
+
+			return success;
 		}
 
-		public void addTypeFace(TextView textView, String assetPath) {
+		public void setTypeFace(TextView textView, String assetPath) {
 			addTypeFaces(assetPath);
 			Typeface tf = typeFaces.get(assetPath);
 			if (tf != null)
