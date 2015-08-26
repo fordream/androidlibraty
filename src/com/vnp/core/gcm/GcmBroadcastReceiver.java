@@ -78,7 +78,7 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 		public void onStart();
 	}
 
-	public void setSenderId(String SenderId, Context context) {
+	public static void setSenderId(String SenderId, Context context) {
 		final String TAG = "setSenderId";
 		final Editor preferences = context.getSharedPreferences(TAG, 0).edit();
 		preferences.putString(TAG, SenderId);
