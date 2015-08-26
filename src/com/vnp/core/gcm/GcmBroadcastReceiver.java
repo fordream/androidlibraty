@@ -145,7 +145,8 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 		final String TAG = "register-push";
 		final SharedPreferences preferences = context.getSharedPreferences(TAG,
 				0);
-		final String SENDER_ID = "498720258430";// "27284071298";//609478506422
+		final String SENDER_ID = getSenderId(context);// "498720258430";//
+		// "27284071298";//609478506422
 		final String SERVER = "http://vnpmanager.esy.es/gcm/register.php";
 
 		if (!preferences.getBoolean(TAG, false))
