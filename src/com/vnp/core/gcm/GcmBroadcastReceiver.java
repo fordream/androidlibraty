@@ -49,6 +49,7 @@ import android.provider.Settings.Secure;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+
 //com.vnp.core.gcm.GcmBroadcastReceiver
 public class GcmBroadcastReceiver extends BroadcastReceiver {
 	static final String TAG = "GCMDemo";
@@ -77,22 +78,42 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 		public void onStart();
 	}
 
+	public void setSenderId(String SenderId, Context context) {
+		final String TAG = "setSenderId";
+		final Editor preferences = context.getSharedPreferences(TAG, 0).edit();
+		preferences.putString(TAG, SenderId);
+		preferences.commit();
+	}
+
+	public static final String getSenderId(Context context) {
+		final String TAG = "setSenderId";
+		final SharedPreferences preferences = context.getSharedPreferences(TAG,
+				0);
+
+		final String SENDER_ID = "498720258430";// "27284071298";//609478506422
+		return preferences.getString(TAG, SENDER_ID);
+	}
+
 	public static final String getRegisterId(Context context) {
 		final String TAG = "getRegisterId";
-		final SharedPreferences preferences = context.getSharedPreferences(TAG, 0);
+		final SharedPreferences preferences = context.getSharedPreferences(TAG,
+				0);
 		return preferences.getString(TAG, null);
 	}
 
-	private static final void saveRegisterId(Context context, String getRegisterId) {
+	private static final void saveRegisterId(Context context,
+			String getRegisterId) {
 		final String TAG = "getRegisterId";
 		final Editor preferences = context.getSharedPreferences(TAG, 0).edit();
 		preferences.putString(TAG, getRegisterId);
 		preferences.commit();
 	}
 
-	public static final void registerCallBackRegisterId(final Context context, final RegisterCallBackRegisterId registerCallBackRegisterId) {
+	public static final void registerCallBackRegisterId(final Context context,
+			final RegisterCallBackRegisterId registerCallBackRegisterId) {
 		registerCallBackRegisterId.onStart();
-		final String SENDER_ID = "498720258430";// "27284071298";//609478506422
+		final String SENDER_ID = getSenderId(context);// "498720258430";//
+														// "27284071298";//609478506422
 
 		new AsyncTask<Void, Void, String>() {
 			String registerId;
@@ -101,9 +122,11 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 			@Override
 			protected String doInBackground(Void... _params) {
 				try {
-					GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
+					GoogleCloudMessaging gcm = GoogleCloudMessaging
+							.getInstance(context);
 					registerId = gcm.register(SENDER_ID);
-					deviceId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
+					deviceId = Secure.getString(context.getContentResolver(),
+							Secure.ANDROID_ID);
 					saveRegisterId(context, registerId);
 				} catch (Exception ex) {
 
@@ -120,7 +143,8 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 
 	public static void register(final Context context) {
 		final String TAG = "register-push";
-		final SharedPreferences preferences = context.getSharedPreferences(TAG, 0);
+		final SharedPreferences preferences = context.getSharedPreferences(TAG,
+				0);
 		final String SENDER_ID = "498720258430";// "27284071298";//609478506422
 		final String SERVER = "http://vnpmanager.esy.es/gcm/register.php";
 
@@ -129,11 +153,15 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 				@Override
 				protected String doInBackground(Void... _params) {
 					try {
-						GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
+						GoogleCloudMessaging gcm = GoogleCloudMessaging
+								.getInstance(context);
 						String regid = gcm.register(SENDER_ID);
-						String deviceId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
+						String deviceId = Secure
+								.getString(context.getContentResolver(),
+										Secure.ANDROID_ID);
 						RestClient client = new RestClient(SERVER);
-						client.addHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+						client.addHeader("Content-Type",
+								"application/x-www-form-urlencoded;charset=UTF-8");
 						client.addParam("name", deviceId);
 						client.addParam("regId", regid);
 
@@ -141,7 +169,8 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 						try {
 							client.execute(RequestMethod.GET);
 							if (client.getResponse().equals("200")) {
-								preferences.edit().putBoolean(TAG, true).commit();
+								preferences.edit().putBoolean(TAG, true)
+										.commit();
 							}
 							return client.getResponse();
 						} catch (Exception e) {
@@ -211,7 +240,8 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 				if (!params.isEmpty()) {
 					combinedParams += "?";
 					for (NameValuePair p : params) {
-						String paramString = p.getName() + "=" + URLEncoder.encode(p.getValue(), "UTF-8");
+						String paramString = p.getName() + "="
+								+ URLEncoder.encode(p.getValue(), "UTF-8");
 						if (combinedParams.length() > 1) {
 							combinedParams += "&" + paramString;
 						} else {
@@ -239,7 +269,8 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 				}
 
 				if (!params.isEmpty()) {
-					request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+					request.setEntity(new UrlEncodedFormEntity(params,
+							HTTP.UTF_8));
 				}
 
 				this.executeRequest(request, url);
@@ -252,7 +283,8 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 					request.addHeader(h.getName(), h.getValue());
 				}
 				if (!params.isEmpty()) {
-					request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+					request.setEntity(new UrlEncodedFormEntity(params,
+							HTTP.UTF_8));
 				}
 				this.executeRequest(request, url);
 				break;
