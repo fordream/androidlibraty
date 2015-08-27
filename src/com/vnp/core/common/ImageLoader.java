@@ -143,7 +143,7 @@ public class ImageLoader {
 
 	private Bitmap getBitmap(ImageView img, String url, boolean isRound) {
 
-		File f = fileCache.getFile(url);
+		File f = fileCache.getFile(url + isRound);
 
 		// from SD cache
 		Bitmap b = decodeFile(f, url, isRound);
