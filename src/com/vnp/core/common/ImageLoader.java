@@ -112,23 +112,23 @@ public class ImageLoader {
 											// thread
 	private Context context;
 
-	private Map<String, String> roundMap = new HashMap<String, String>();
+	// private Map<String, String> roundMap = new HashMap<String, String>();
 
 	public void displayImage(String url, ImageView imageView, boolean round) {
 		if (imageView == null) {
 			return;
 		}
-
-		if (round && !CommonAndroid.isBlank(url)) {
-			if (roundMap.containsKey(url)) {
-				roundMap.remove(url);
-			}
-
-			roundMap.put(url, "");
-		}
+		//
+		// if (round && !CommonAndroid.isBlank(url)) {
+		// if (roundMap.containsKey(url)) {
+		// roundMap.remove(url);
+		// }
+		//
+		// roundMap.put(url, "");
+		// }
 
 		imageViews.put(imageView, url);
-		Bitmap bitmap = memoryCache.get(url);
+		Bitmap bitmap = memoryCache.get(url + round);
 		if (bitmap != null)
 			imageView.setImageBitmap(bitmap);
 		else {
@@ -141,12 +141,12 @@ public class ImageLoader {
 		executorService.submit(new PhotosLoader(p));
 	}
 
-	private Bitmap getBitmap(ImageView img, String url) {
+	private Bitmap getBitmap(ImageView img, String url, boolean isRound) {
 
 		File f = fileCache.getFile(url);
 
 		// from SD cache
-		Bitmap b = decodeFile(f, url);
+		Bitmap b = decodeFile(f, url, isRound);
 		if (b != null) {
 			return b;
 		}
@@ -164,15 +164,15 @@ public class ImageLoader {
 				CopyStream(is, os);
 				is.close();
 				os.close();
-				return decodeFile(f, url);
+				return decodeFile(f, url, isRound);
 			} else if (url.startsWith("https:")) {
 				HttpsRestClient client = new HttpsRestClient(context, url);
-				return decodeFile(client.executeDownloadFile(RequestMethod.GET, f), url);
+				return decodeFile(client.executeDownloadFile(RequestMethod.GET, f), url, isRound);
 			} else if (url != null && url.startsWith("file:///android_asset")) {
 				return null;
 			} else if (url != null && url.startsWith("file://")) {
 				url = url.substring(url.indexOf("file://") + 7, url.length());
-				return decodeFile(new File(url), url);
+				return decodeFile(new File(url), url, isRound);
 			} else if (url != null && url.startsWith("content://")) {
 				try {
 					return MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(url));
@@ -183,7 +183,7 @@ public class ImageLoader {
 				try {
 					int contact_id = Integer.parseInt(url);
 					CommonAndroid.getBitmapFromContactId(context, url, f);
-					return decodeFile(f, url);
+					return decodeFile(f, url, isRound);
 				} catch (Exception exception) {
 					// base 64
 					Bitmap bitmap = CommonAndroid.base64ToBitmap(url);
@@ -192,7 +192,7 @@ public class ImageLoader {
 						CommonAndroid.saveBitmapTofile(bitmap, f);
 					}
 
-					return decodeFile(f, url);
+					return decodeFile(f, url, isRound);
 				}
 
 			}
@@ -223,7 +223,7 @@ public class ImageLoader {
 	}
 
 	// decodes image and scales it to reduce memory consumption
-	public Bitmap decodeFile(File f, String url) {
+	public Bitmap decodeFile(File f, String url, boolean isRound) {
 		try {
 			// decode image size
 			BitmapFactory.Options o = new BitmapFactory.Options();
@@ -250,7 +250,8 @@ public class ImageLoader {
 			FileInputStream stream2 = new FileInputStream(f);
 			Bitmap bitmap = BitmapFactory.decodeStream(stream2, null, o2);
 			stream2.close();
-			if (roundMap.containsKey(url)) {
+			// if (roundMap.containsKey(url)) {
+			if (isRound) {
 				bitmap = createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getWidth(), ScalingLogic.CROP);
 				bitmap = getRoundedCornerBitmap(context, bitmap, bitmap.getWidth() / 2, true, true, true, true);
 			}
@@ -286,8 +287,8 @@ public class ImageLoader {
 			try {
 				if (imageViewReused(photoToLoad))
 					return;
-				Bitmap bmp = getBitmap(photoToLoad.imageView, photoToLoad.url);
-				memoryCache.put(photoToLoad.url, bmp);
+				Bitmap bmp = getBitmap(photoToLoad.imageView, photoToLoad.url, photoToLoad.isRound);
+				memoryCache.put(photoToLoad.url + photoToLoad.isRound, bmp);
 				if (imageViewReused(photoToLoad))
 					return;
 				BitmapDisplayer bd = new BitmapDisplayer(bmp, photoToLoad);
