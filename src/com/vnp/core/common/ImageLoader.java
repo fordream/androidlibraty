@@ -39,8 +39,7 @@ import com.vnp.core.service.HttpsRestClient;
 import com.vnp.core.service.RequestMethod;
 
 public class ImageLoader {
-	public void display(Activity activityOrViewOrDialod, int resId,
-			int resImgBase, String url, boolean isRound) {
+	public void display(Activity activityOrViewOrDialod, int resId, int resImgBase, String url, boolean isRound) {
 		ImageView imgv = null;
 		if (CommonAndroid.getView(activityOrViewOrDialod, resId) instanceof ImageView) {
 			imgv = CommonAndroid.getView(activityOrViewOrDialod, resId);
@@ -54,8 +53,7 @@ public class ImageLoader {
 		}
 	}
 
-	public void display(View activityOrViewOrDialod, int resId, int resImgBase,
-			String url, boolean isRound) {
+	public void display(View activityOrViewOrDialod, int resId, int resImgBase, String url, boolean isRound) {
 		ImageView imgv = null;
 		if (CommonAndroid.getView(activityOrViewOrDialod, resId) instanceof ImageView) {
 			imgv = CommonAndroid.getView(activityOrViewOrDialod, resId);
@@ -69,8 +67,7 @@ public class ImageLoader {
 		}
 	}
 
-	public void display(Dialog activityOrViewOrDialod, int resId,
-			int resImgBase, String url, boolean isRound) {
+	public void display(Dialog activityOrViewOrDialod, int resId, int resImgBase, String url, boolean isRound) {
 		ImageView imgv = null;
 		if (CommonAndroid.getView(activityOrViewOrDialod, resId) instanceof ImageView) {
 			imgv = CommonAndroid.getView(activityOrViewOrDialod, resId);
@@ -81,47 +78,6 @@ public class ImageLoader {
 				imgv.setImageResource(resImgBase);
 			}
 			displayImage(url, imgv, isRound);
-		}
-	}
-
-	public void displayImageCover(String url, ImageView imageView) {
-		if (!CommonAndroid.isBlank(url)) {
-			displayImage(url, imageView, false);
-		}
-	}
-
-	public void showLogoDichvu(final ImageView menu_right_item_img_icon,
-			final String avatar) {
-		menu_right_item_img_icon.setImageResource(R.drawable.btn_crop_operator);
-		displayImage(avatar, menu_right_item_img_icon, false);
-
-	}
-
-	public void showLogoTinTuc(ImageView tintuc_item_img_icon, String images) {
-		tintuc_item_img_icon.setImageResource(R.drawable.btn_crop_operator);
-		displayImage(images, tintuc_item_img_icon, false);
-	}
-
-	// **
-
-	public void displayImageInfor(String url, ImageView imageView) {
-		imageView.setImageResource(R.drawable.btn_crop_operator);
-		if (!CommonAndroid.isBlank(url)) {
-			displayImage(url, imageView, true);
-		}
-	}
-
-	public void showAvatarContact(final ImageView menu_right_item_img_icon,
-			final String avatar, final String contact_id, int resAvatar) {
-
-		menu_right_item_img_icon.setImageResource(resAvatar);
-		if (CommonAndroid.isBlank(avatar)) {
-			if (CommonAndroid.isBlank(contact_id)) {
-			} else {
-				displayImage(contact_id, menu_right_item_img_icon, true);
-			}
-		} else {
-			displayImage(avatar, menu_right_item_img_icon, true);
 		}
 	}
 
@@ -144,29 +100,25 @@ public class ImageLoader {
 		if (this.context == null && xcontext != null) {
 			this.context = xcontext;
 			fileCache = new FileCache(context);
-			MAX_WIDTH = (int) context.getResources().getDimension(
-					R.dimen.dimen_100dp);
 			executorService = Executors.newFixedThreadPool(5);
 		}
 	}
 
 	private MemoryCache memoryCache = new MemoryCache();
 	private FileCache fileCache;
-	private Map<ImageView, String> imageViews = Collections
-			.synchronizedMap(new WeakHashMap<ImageView, String>());
+	private Map<ImageView, String> imageViews = Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
 	private ExecutorService executorService;
 	private Handler handler = new Handler();// handler to display images in UI
 											// thread
 	private Context context;
-	private static int MAX_WIDTH = 150;
-
-	final int stub_id = 0;
 
 	private Map<String, String> roundMap = new HashMap<String, String>();
 
 	public void displayImage(String url, ImageView imageView, boolean round) {
-		if (imageView == null)
+		if (imageView == null) {
 			return;
+		}
+
 		if (round && !CommonAndroid.isBlank(url)) {
 			if (roundMap.containsKey(url)) {
 				roundMap.remove(url);
@@ -180,19 +132,16 @@ public class ImageLoader {
 		if (bitmap != null)
 			imageView.setImageBitmap(bitmap);
 		else {
-			queuePhoto(url, imageView);
-			if (stub_id != 0) {
-				imageView.setImageResource(stub_id);
-			}
+			queuePhoto(url, imageView, round);
 		}
 	}
 
-	private void queuePhoto(String url, ImageView imageView) {
-		PhotoToLoad p = new PhotoToLoad(url, imageView);
+	private void queuePhoto(String url, ImageView imageView, boolean isRound) {
+		PhotoToLoad p = new PhotoToLoad(url, imageView, isRound);
 		executorService.submit(new PhotosLoader(p));
 	}
 
-	private Bitmap getBitmap(String url) {
+	private Bitmap getBitmap(ImageView img, String url) {
 
 		File f = fileCache.getFile(url);
 
@@ -206,8 +155,7 @@ public class ImageLoader {
 		try {
 			if (url.startsWith("http:")) {
 				URL imageUrl = new URL(url);
-				HttpURLConnection conn = (HttpURLConnection) imageUrl
-						.openConnection();
+				HttpURLConnection conn = (HttpURLConnection) imageUrl.openConnection();
 				conn.setConnectTimeout(30000);
 				conn.setReadTimeout(30000);
 				conn.setInstanceFollowRedirects(true);
@@ -219,8 +167,7 @@ public class ImageLoader {
 				return decodeFile(f, url);
 			} else if (url.startsWith("https:")) {
 				HttpsRestClient client = new HttpsRestClient(context, url);
-				return decodeFile(
-						client.executeDownloadFile(RequestMethod.GET, f), url);
+				return decodeFile(client.executeDownloadFile(RequestMethod.GET, f), url);
 			} else if (url != null && url.startsWith("file:///android_asset")) {
 				return null;
 			} else if (url != null && url.startsWith("file://")) {
@@ -228,8 +175,7 @@ public class ImageLoader {
 				return decodeFile(new File(url), url);
 			} else if (url != null && url.startsWith("content://")) {
 				try {
-					return MediaStore.Images.Media.getBitmap(
-							context.getContentResolver(), Uri.parse(url));
+					return MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(url));
 				} catch (Exception e) {
 					return null;
 				}
@@ -246,12 +192,9 @@ public class ImageLoader {
 						CommonAndroid.saveBitmapTofile(bitmap, f);
 					}
 
-					// TODO
 					return decodeFile(f, url);
 				}
 
-				// copy(new File(url), f);
-				// return decodeFile(f, url);
 			}
 		} catch (Throwable ex) {
 			ex.printStackTrace();
@@ -294,8 +237,7 @@ public class ImageLoader {
 			int width_tmp = o.outWidth, height_tmp = o.outHeight;
 			int scale = 1;
 			while (true) {
-				if (width_tmp / 2 < REQUIRED_SIZE
-						| height_tmp / 2 < REQUIRED_SIZE)
+				if (width_tmp / 2 < REQUIRED_SIZE | height_tmp / 2 < REQUIRED_SIZE)
 					break;
 				width_tmp /= 2;
 				height_tmp /= 2;
@@ -309,10 +251,8 @@ public class ImageLoader {
 			Bitmap bitmap = BitmapFactory.decodeStream(stream2, null, o2);
 			stream2.close();
 			if (roundMap.containsKey(url)) {
-				bitmap = createScaledBitmap(bitmap, bitmap.getWidth(),
-						bitmap.getWidth(), ScalingLogic.CROP);
-				bitmap = getRoundedCornerBitmap(context, bitmap,
-						bitmap.getWidth() / 2, true, true, true, true);
+				bitmap = createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getWidth(), ScalingLogic.CROP);
+				bitmap = getRoundedCornerBitmap(context, bitmap, bitmap.getWidth() / 2, true, true, true, true);
 			}
 			return bitmap;
 		} catch (Exception e) {
@@ -324,10 +264,13 @@ public class ImageLoader {
 	private class PhotoToLoad {
 		public String url;
 		public ImageView imageView;
+		public boolean isRound;
 
-		public PhotoToLoad(String u, ImageView i) {
+		public PhotoToLoad(String u, ImageView i, boolean isRound) {
 			url = u;
 			imageView = i;
+			this.isRound = isRound;
+
 		}
 	}
 
@@ -343,7 +286,7 @@ public class ImageLoader {
 			try {
 				if (imageViewReused(photoToLoad))
 					return;
-				Bitmap bmp = getBitmap(photoToLoad.url);
+				Bitmap bmp = getBitmap(photoToLoad.imageView, photoToLoad.url);
 				memoryCache.put(photoToLoad.url, bmp);
 				if (imageViewReused(photoToLoad))
 					return;
@@ -377,9 +320,6 @@ public class ImageLoader {
 				return;
 			if (bitmap != null) {
 				photoToLoad.imageView.setImageBitmap(bitmap);
-			} else {
-				if (stub_id != 0)
-					photoToLoad.imageView.setImageResource(stub_id);
 			}
 		}
 	}
@@ -413,14 +353,10 @@ public class ImageLoader {
 
 		public FileCache(Context context) {
 			// Find the dir to save cached images
-			String path = "Android/data/" + context.getPackageName()
-					+ "/LazyList";
-			if (android.os.Environment.getExternalStorageState().equals(
-					android.os.Environment.MEDIA_MOUNTED)) {
+			String path = "Android/data/" + context.getPackageName() + "/LazyList";
+			if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
 				// LazyList
-				cacheDir = new File(
-						android.os.Environment.getExternalStorageDirectory(),
-						path);
+				cacheDir = new File(android.os.Environment.getExternalStorageDirectory(), path);
 			} else {
 				cacheDir = context.getCacheDir();
 			}
@@ -471,22 +407,16 @@ public class ImageLoader {
 		}
 	}
 
-	public static Bitmap createScaledBitmap(Bitmap unscaledBitmap,
-			int dstWidth, int dstHeight, ScalingLogic scalingLogic) {
-		Rect srcRect = calculateSrcRect(unscaledBitmap.getWidth(),
-				unscaledBitmap.getHeight(), dstWidth, dstHeight, scalingLogic);
-		Rect dstRect = calculateDstRect(unscaledBitmap.getWidth(),
-				unscaledBitmap.getHeight(), dstWidth, dstHeight, scalingLogic);
-		Bitmap scaledBitmap = Bitmap.createBitmap(dstRect.width(),
-				dstRect.height(), Config.ARGB_8888);
+	public static Bitmap createScaledBitmap(Bitmap unscaledBitmap, int dstWidth, int dstHeight, ScalingLogic scalingLogic) {
+		Rect srcRect = calculateSrcRect(unscaledBitmap.getWidth(), unscaledBitmap.getHeight(), dstWidth, dstHeight, scalingLogic);
+		Rect dstRect = calculateDstRect(unscaledBitmap.getWidth(), unscaledBitmap.getHeight(), dstWidth, dstHeight, scalingLogic);
+		Bitmap scaledBitmap = Bitmap.createBitmap(dstRect.width(), dstRect.height(), Config.ARGB_8888);
 		Canvas canvas = new Canvas(scaledBitmap);
-		canvas.drawBitmap(unscaledBitmap, srcRect, dstRect, new Paint(
-				Paint.FILTER_BITMAP_FLAG));
+		canvas.drawBitmap(unscaledBitmap, srcRect, dstRect, new Paint(Paint.FILTER_BITMAP_FLAG));
 		return scaledBitmap;
 	}
 
-	public static Rect calculateSrcRect(int srcWidth, int srcHeight,
-			int dstWidth, int dstHeight, ScalingLogic scalingLogic) {
+	public static Rect calculateSrcRect(int srcWidth, int srcHeight, int dstWidth, int dstHeight, ScalingLogic scalingLogic) {
 		return new Rect(0, 0, srcWidth, srcHeight);
 	}
 
@@ -494,8 +424,7 @@ public class ImageLoader {
 		CROP, FIT
 	}
 
-	public static Rect calculateDstRect(int srcWidth, int srcHeight,
-			int dstWidth, int dstHeight, ScalingLogic scalingLogic) {
+	public static Rect calculateDstRect(int srcWidth, int srcHeight, int dstWidth, int dstHeight, ScalingLogic scalingLogic) {
 		if (scalingLogic == ScalingLogic.FIT) {
 			final float srcAspect = (float) srcWidth / (float) srcHeight;
 			final float dstAspect = (float) dstWidth / (float) dstHeight;
@@ -505,9 +434,7 @@ public class ImageLoader {
 		}
 	}
 
-	public static Bitmap getRoundedCornerBitmap(Context context, Bitmap bitmap,
-			int roundDip, boolean roundTL, boolean roundTR, boolean roundBL,
-			boolean roundBR) {
+	public static Bitmap getRoundedCornerBitmap(Context context, Bitmap bitmap, int roundDip, boolean roundTL, boolean roundTR, boolean roundBL, boolean roundBR) {
 		try {
 			int w_default = bitmap.getWidth();
 			int h_default = bitmap.getHeight();
@@ -556,7 +483,6 @@ public class ImageLoader {
 	}
 
 	public static int convertDipToPixels(float dips, Context appContext) {
-		return (int) (dips
-				* appContext.getResources().getDisplayMetrics().density + 0.5f);
+		return (int) (dips * appContext.getResources().getDisplayMetrics().density + 0.5f);
 	}
 }
