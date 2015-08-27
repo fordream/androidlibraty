@@ -39,40 +39,29 @@ import com.vnp.core.service.HttpsRestClient;
 import com.vnp.core.service.RequestMethod;
 
 public class ImageLoader {
-	public void display(Activity activityOrViewOrDialod, int resId, int resImgBase, String url, boolean isRound) {
+
+	/**
+	 * 
+	 * @param object : View, Activity, Dialog
+	 * @param resId
+	 * @param resImgBase
+	 * @param url
+	 * @param isRound
+	 */
+	public void display(Object object, int resId, int resImgBase, String url, boolean isRound) {
 		ImageView imgv = null;
-		if (CommonAndroid.getView(activityOrViewOrDialod, resId) instanceof ImageView) {
-			imgv = CommonAndroid.getView(activityOrViewOrDialod, resId);
+		if (object instanceof Activity && CommonAndroid.getView((Activity) object, resId) instanceof ImageView) {
+			imgv = CommonAndroid.getView((Activity) object, resId);
 		}
 
-		if (imgv != null) {
-			if (resImgBase > 0) {
-				imgv.setImageResource(resImgBase);
-			}
-			displayImage(url, imgv, isRound);
+		if (object instanceof View && CommonAndroid.getView((View) object, resId) instanceof ImageView) {
+			imgv = CommonAndroid.getView((View) object, resId);
 		}
-	}
-
-	public void display(View activityOrViewOrDialod, int resId, int resImgBase, String url, boolean isRound) {
-		ImageView imgv = null;
-		if (CommonAndroid.getView(activityOrViewOrDialod, resId) instanceof ImageView) {
-			imgv = CommonAndroid.getView(activityOrViewOrDialod, resId);
+		
+		if (object instanceof Dialog && CommonAndroid.getView((Dialog) object, resId) instanceof ImageView) {
+			imgv = CommonAndroid.getView((Dialog) object, resId);
 		}
-
-		if (imgv != null) {
-			if (resImgBase > 0) {
-				imgv.setImageResource(resImgBase);
-			}
-			displayImage(url, imgv, isRound);
-		}
-	}
-
-	public void display(Dialog activityOrViewOrDialod, int resId, int resImgBase, String url, boolean isRound) {
-		ImageView imgv = null;
-		if (CommonAndroid.getView(activityOrViewOrDialod, resId) instanceof ImageView) {
-			imgv = CommonAndroid.getView(activityOrViewOrDialod, resId);
-		}
-
+		
 		if (imgv != null) {
 			if (resImgBase > 0) {
 				imgv.setImageResource(resImgBase);
@@ -133,7 +122,7 @@ public class ImageLoader {
 
 	private Bitmap getBitmap(ImageView img, String url, boolean isRound) {
 
-//		File f = fileCache.getFile(url + isRound);
+		// File f = fileCache.getFile(url + isRound);
 		File f = fileCache.getFile(url);
 
 		// from SD cache
