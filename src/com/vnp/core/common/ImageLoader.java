@@ -112,20 +112,10 @@ public class ImageLoader {
 											// thread
 	private Context context;
 
-	// private Map<String, String> roundMap = new HashMap<String, String>();
-
 	public void displayImage(String url, ImageView imageView, boolean round) {
 		if (imageView == null) {
 			return;
 		}
-		//
-		// if (round && !CommonAndroid.isBlank(url)) {
-		// if (roundMap.containsKey(url)) {
-		// roundMap.remove(url);
-		// }
-		//
-		// roundMap.put(url, "");
-		// }
 
 		imageViews.put(imageView, url);
 		Bitmap bitmap = memoryCache.get(url + round);
@@ -143,7 +133,8 @@ public class ImageLoader {
 
 	private Bitmap getBitmap(ImageView img, String url, boolean isRound) {
 
-		File f = fileCache.getFile(url + isRound);
+//		File f = fileCache.getFile(url + isRound);
+		File f = fileCache.getFile(url);
 
 		// from SD cache
 		Bitmap b = decodeFile(f, url, isRound);
