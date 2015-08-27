@@ -13,7 +13,6 @@ public abstract class GalleryCameraChooser {
 
 	public static final int REQUESTCODEGALLERY = 10807;
 	public static final int REQUESTCODECAMERA = 10808;
-	public static final int REQUESTCODEGALLERY_MULTIPLE_SELECT = 10809;
 
 	public void startGalleryChooser(Activity activity) {
 		Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
@@ -21,13 +20,7 @@ public abstract class GalleryCameraChooser {
 		activity.startActivityForResult(photoPickerIntent, REQUESTCODEGALLERY);
 	}
 
-	public void startGalleryChooserMultiple(Activity activity) {
-		Intent intent = new Intent();
-		intent.setType("image/*");
-		intent.setAction(Intent.ACTION_GET_CONTENT);
-		activity.startActivityForResult(Intent.createChooser(intent, ""), REQUESTCODEGALLERY_MULTIPLE_SELECT);
-	}
-
+	
 	public void startCameraChooser(Activity activity) {
 		Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 		activity.startActivityForResult(cameraIntent, REQUESTCODECAMERA);
@@ -44,14 +37,7 @@ public abstract class GalleryCameraChooser {
 			}
 		} else if (REQUESTCODECAMERA == requestCode && resultCode == Activity.RESULT_OK) {
 			onCamera((Bitmap) data.getExtras().get("data"));
-		} else if (REQUESTCODEGALLERY_MULTIPLE_SELECT == requestCode && resultCode == Activity.RESULT_OK) {
-			if(data!= null && data.getExtras()!= null){
-				Set<String> keys = data.getExtras().keySet();
-				for(String  key : keys){
-					LogUtils.e("AAAAAAAAAAAAA", key + " " + data.getExtras().getString(key));
-				}
-			}
-		}
+		} 
 	}
 
 	private Bitmap decodeUri(Activity activity, Uri selectedImage) throws FileNotFoundException {
