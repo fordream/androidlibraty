@@ -1,7 +1,7 @@
 package com.vnp.core.common;
 
 import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.util.Set;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,11 +13,19 @@ public abstract class GalleryCameraChooser {
 
 	public static final int REQUESTCODEGALLERY = 10807;
 	public static final int REQUESTCODECAMERA = 10808;
+	public static final int REQUESTCODEGALLERY_MULTIPLE_SELECT = 10809;
 
 	public void startGalleryChooser(Activity activity) {
 		Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
 		photoPickerIntent.setType("image/*");
 		activity.startActivityForResult(photoPickerIntent, REQUESTCODEGALLERY);
+	}
+
+	public void startGalleryChooserMultiple(Activity activity) {
+		Intent intent = new Intent();
+		intent.setType("image/*");
+		intent.setAction(Intent.ACTION_GET_CONTENT);
+		activity.startActivityForResult(Intent.createChooser(intent, ""), REQUESTCODEGALLERY_MULTIPLE_SELECT);
 	}
 
 	public void startCameraChooser(Activity activity) {
@@ -34,19 +42,15 @@ public abstract class GalleryCameraChooser {
 			} catch (FileNotFoundException e) {
 				onGalleryError();
 			}
-			// try {
-			// InputStream imageStream =
-			// activity.getContentResolver().openInputStream(selectedImage);
-			// Bitmap yourSelectedImage =
-			// BitmapFactory.decodeStream(imageStream);
-			// onGallery(yourSelectedImage);
-			//
-			//
-			// } catch (Exception e) {
-			// onGalleryError();
-			// }
 		} else if (REQUESTCODECAMERA == requestCode && resultCode == Activity.RESULT_OK) {
 			onCamera((Bitmap) data.getExtras().get("data"));
+		} else if (REQUESTCODEGALLERY_MULTIPLE_SELECT == requestCode && resultCode == Activity.RESULT_OK) {
+			if(data!= null && data.getExtras()!= null){
+				Set<String> keys = data.getExtras().keySet();
+				for(String  key : keys){
+					LogUtils.e("AAAAAAAAAAAAA", key + " " + data.getExtras().getString(key));
+				}
+			}
 		}
 	}
 
