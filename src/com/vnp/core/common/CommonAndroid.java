@@ -73,7 +73,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.telephony.TelephonyManager;
 import android.util.Base64;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -86,7 +85,6 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -104,6 +102,11 @@ import com.vnp.core.service.RestClientCallBack;
 
 @SuppressLint("NewApi")
 public class CommonAndroid {
+
+	public static Bitmap getBitmapFromAsset(String assetFile) {
+		return BitmapFactory.decodeFile("file:///android_asset/" + assetFile);
+	}
+
 	/**
 	 * 
 	 * @param extras
