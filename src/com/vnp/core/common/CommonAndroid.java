@@ -627,7 +627,8 @@ public class CommonAndroid {
 	 */
 	public static String getString(Cursor cursor, String key) {
 		try {
-			return cursor.getString(cursor.getColumnIndex(key));
+			String str = cursor.getString(cursor.getColumnIndex(key));
+			return decodeUnicodeEncodingToAStringOfLetters(str);
 		} catch (Exception exception) {
 			return "";
 		}
