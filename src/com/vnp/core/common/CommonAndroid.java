@@ -629,7 +629,7 @@ public class CommonAndroid {
 		try {
 			String str = cursor.getString(cursor.getColumnIndex(key));
 			return decodeUnicodeEncodingToAStringOfLetters(str);
-			//return str;
+			// return str;
 		} catch (Exception exception) {
 			return "";
 		}
@@ -648,9 +648,9 @@ public class CommonAndroid {
 			if ("null".equals(str)) {
 				str = "";
 			}
-			
+
 			return decodeUnicodeEncodingToAStringOfLetters(str);
-			//return str;
+			// return str;
 		} catch (JSONException e) {
 			return "";
 		}
@@ -892,6 +892,16 @@ public class CommonAndroid {
 		String packageName = am.getRunningTasks(1).get(0).topActivity.getPackageName();
 		if (packageName.equalsIgnoreCase(context.getPackageName())) {
 			return true;
+		}
+		return false;
+	}
+
+	public static boolean getAllPackage(Context context) {
+		// <uses-permission android:name="android.permission.GET_TASKS" />
+		ActivityManager am = (ActivityManager) context.getSystemService(Activity.ACTIVITY_SERVICE);
+		String packageName = am.getRunningTasks(1).get(0).topActivity.getPackageName();
+		if (packageName.equalsIgnoreCase(context.getPackageName())) {
+			LogUtils.e("getAllPackage", packageName);
 		}
 		return false;
 	}
