@@ -31,10 +31,8 @@ import android.net.Uri;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.ict.library.R;
 import com.vnp.core.service.HttpsRestClient;
 import com.vnp.core.service.RequestMethod;
 
@@ -49,7 +47,7 @@ public class ImageLoader {
 	 * @param url
 	 * @param isRound
 	 */
-	public void display(Object object, int resId, int resImgBase, String url, boolean isRound) {
+	public void display(Object object, int resId, int resImgBase, String url, boolean isRound, int requimentSize) {
 		ImageView imgv = null;
 		if (object instanceof Activity && CommonAndroid.getView((Activity) object, resId) instanceof ImageView) {
 			imgv = CommonAndroid.getView((Activity) object, resId);
@@ -67,73 +65,54 @@ public class ImageLoader {
 			if (resImgBase > 0) {
 				imgv.setImageResource(resImgBase);
 			}
-			displayImage(url, imgv, isRound);
+
+			displayImage(url, imgv, isRound, requimentSize);
 		}
 	}
 
-	/**
-	 * 
-	 */
-	private static ImageLoader instance = new ImageLoader();
-
-	private ImageLoader() {
-
-	}
-
-	public static ImageLoader getInstance(Context context) {
-		instance.init(context);
-
-		return instance;
-	}
-
-	private void init(Context xcontext) {
-		if (this.context == null && xcontext != null) {
-			this.context = xcontext;
-			fileCache = new FileCache(context);
-			executorService = Executors.newFixedThreadPool(5);
+	public void displayImage(String url, ImageView imageView, boolean round, int requimentSize) {
+		if (imageView == null) {
+			return;
 		}
+
+		PhotoToLoad p = new PhotoToLoad(url, imageView, round, requimentSize);
+
+		imageViews.put(imageView, p.getName());
+
+		Bitmap bitmap = memoryCache.get(p.getName());
+
+		if (bitmap != null) {
+			imageView.setImageBitmap(bitmap);
+		} else {
+			executorService.submit(new PhotosLoader(p));
+		}
+	}
+
+	public void display(Object object, int resId, int resImgBase, String url, boolean isRound) {
+		display(object, resId, resImgBase, url, isRound, 0);
+	}
+
+	public void displayImage(String url, ImageView imageView, boolean round) {
+		displayImage(url, imageView, round, 0);
 	}
 
 	private MemoryCache memoryCache = new MemoryCache();
 	private FileCache fileCache;
 	private Map<ImageView, String> imageViews = Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
 	private ExecutorService executorService;
-	private Handler handler = new Handler();// handler to display images in UI
-											// thread
+	private Handler handler = new Handler();
 	private Context context;
 
-	public void displayImage(String url, ImageView imageView, boolean round) {
-		if (imageView == null) {
-			return;
-		}
-
-		imageViews.put(imageView, url);
-		Bitmap bitmap = memoryCache.get(url + round);
-
-		if (bitmap != null) {
-			imageView.setImageBitmap(bitmap);
-		} else {
-			queuePhoto(url, imageView, round);
-		}
-	}
-
-	private void queuePhoto(String url, ImageView imageView, boolean isRound) {
-		PhotoToLoad p = new PhotoToLoad(url, imageView, isRound);
-		executorService.submit(new PhotosLoader(p));
-	}
-
-	private Bitmap getBitmap(ImageView img, String url, boolean isRound) {
-
-		 File f = fileCache.getFile(url + isRound);
-//		File f = fileCache.getFile(url);
+	private Bitmap getBitmap(PhotoToLoad photoToLoad) {
+		File f = fileCache.getFile(photoToLoad.getName());
 
 		// from SD cache
-		Bitmap b = decodeFile(f, url, isRound);
+		Bitmap b = decodeFile(f, photoToLoad);
 		if (b != null) {
 			return b;
 		}
 
-		// from web
+		String url = photoToLoad.url;
 		try {
 			if (url.startsWith("http:")) {
 				URL imageUrl = new URL(url);
@@ -146,15 +125,15 @@ public class ImageLoader {
 				CopyStream(is, os);
 				is.close();
 				os.close();
-				return decodeFile(f, url, isRound);
+				return decodeFile(f, photoToLoad);
 			} else if (url.startsWith("https:")) {
 				HttpsRestClient client = new HttpsRestClient(context, url);
-				return decodeFile(client.executeDownloadFile(RequestMethod.GET, f), url, isRound);
+				return decodeFile(client.executeDownloadFile(RequestMethod.GET, f), photoToLoad);
 			} else if (url != null && url.startsWith("file:///android_asset")) {
 				return null;
 			} else if (url != null && url.startsWith("file://")) {
 				url = url.substring(url.indexOf("file://") + 7, url.length());
-				return decodeFile(new File(url), url, isRound);
+				return decodeFile(new File(url), photoToLoad);
 			} else if (url != null && url.startsWith("content://")) {
 				try {
 					return MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(url));
@@ -165,18 +144,16 @@ public class ImageLoader {
 				try {
 					int contact_id = Integer.parseInt(url);
 					CommonAndroid.getBitmapFromContactId(context, url, f);
-					return decodeFile(f, url, isRound);
+					return decodeFile(f, photoToLoad);
 				} catch (Exception exception) {
-					// base 64
 					Bitmap bitmap = CommonAndroid.base64ToBitmap(url);
 
 					if (bitmap != null) {
 						CommonAndroid.saveBitmapTofile(bitmap, f);
 					}
 
-					return decodeFile(f, url, isRound);
+					return decodeFile(f, photoToLoad);
 				}
-
 			}
 		} catch (Throwable ex) {
 			ex.printStackTrace();
@@ -205,7 +182,7 @@ public class ImageLoader {
 	}
 
 	// decodes image and scales it to reduce memory consumption
-	public Bitmap decodeFile(File f, String url, boolean isRound) {
+	public Bitmap decodeFile(File f, PhotoToLoad photoToLoad) {
 		try {
 			// decode image size
 			BitmapFactory.Options o = new BitmapFactory.Options();
@@ -215,7 +192,11 @@ public class ImageLoader {
 			stream1.close();
 
 			// Find the correct scale value. It should be the power of 2.
-			final int REQUIRED_SIZE = 480;
+			int REQUIRED_SIZE = 480;
+
+			if (photoToLoad.requimentSize > 0) {
+				REQUIRED_SIZE = photoToLoad.requimentSize;
+			}
 			int width_tmp = o.outWidth, height_tmp = o.outHeight;
 			int scale = 1;
 			while (true) {
@@ -233,7 +214,7 @@ public class ImageLoader {
 			Bitmap bitmap = BitmapFactory.decodeStream(stream2, null, o2);
 			stream2.close();
 
-			if (isRound) {
+			if (photoToLoad.isRound) {
 				bitmap = createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getWidth(), ScalingLogic.CROP);
 				bitmap = getRoundedCornerBitmap(context, bitmap, bitmap.getWidth() / 2, true, true, true, true);
 			}
@@ -246,19 +227,27 @@ public class ImageLoader {
 
 	// Task for the queue
 	private class PhotoToLoad {
+
+		public String getName() {
+			return url + isRound + requimentSize;
+		}
+
 		public String url;
 		public ImageView imageView;
 		public boolean isRound;
+		public int requimentSize;
 
-		public PhotoToLoad(String u, ImageView i, boolean isRound) {
+		public PhotoToLoad(String u, ImageView i, boolean isRound, int requimentSize) {
 			url = u;
 			imageView = i;
 			this.isRound = isRound;
+			this.requimentSize = requimentSize;
 
 		}
 	}
 
 	class PhotosLoader implements Runnable {
+
 		PhotoToLoad photoToLoad;
 
 		PhotosLoader(PhotoToLoad photoToLoad) {
@@ -270,8 +259,8 @@ public class ImageLoader {
 			try {
 				if (imageViewReused(photoToLoad))
 					return;
-				Bitmap bmp = getBitmap(photoToLoad.imageView, photoToLoad.url, photoToLoad.isRound);
-				memoryCache.put(photoToLoad.url + photoToLoad.isRound, bmp);
+				Bitmap bmp = getBitmap(photoToLoad);
+				memoryCache.put(photoToLoad.getName(), bmp);
 				if (imageViewReused(photoToLoad)) {
 					return;
 				}
@@ -286,7 +275,7 @@ public class ImageLoader {
 
 	boolean imageViewReused(PhotoToLoad photoToLoad) {
 		String tag = imageViews.get(photoToLoad.imageView);
-		if (tag == null || !tag.equals(photoToLoad.url))
+		if (tag == null || !tag.equals(photoToLoad.getName()))
 			return true;
 		return false;
 	}
@@ -350,6 +339,7 @@ public class ImageLoader {
 		}
 
 		public File getFile(String url) {
+
 			String filename = String.valueOf(url.hashCode());
 			File f = new File(cacheDir, filename);
 			return f;
@@ -466,5 +456,28 @@ public class ImageLoader {
 
 	public static int convertDipToPixels(float dips, Context appContext) {
 		return (int) (dips * appContext.getResources().getDisplayMetrics().density + 0.5f);
+	}
+
+	/**
+	 * 
+	 */
+	private static ImageLoader instance = new ImageLoader();
+
+	private ImageLoader() {
+
+	}
+
+	public static ImageLoader getInstance(Context context) {
+		instance.init(context);
+
+		return instance;
+	}
+
+	private void init(Context xcontext) {
+		if (this.context == null && xcontext != null) {
+			this.context = xcontext;
+			fileCache = new FileCache(context);
+			executorService = Executors.newFixedThreadPool(5);
+		}
 	}
 }
