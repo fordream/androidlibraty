@@ -124,8 +124,8 @@ public class ImageLoader {
 
 	private Bitmap getBitmap(ImageView img, String url, boolean isRound) {
 
-		// File f = fileCache.getFile(url + isRound);
-		File f = fileCache.getFile(url);
+		 File f = fileCache.getFile(url + isRound);
+//		File f = fileCache.getFile(url);
 
 		// from SD cache
 		Bitmap b = decodeFile(f, url, isRound);
@@ -237,7 +237,7 @@ public class ImageLoader {
 				bitmap = createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getWidth(), ScalingLogic.CROP);
 				bitmap = getRoundedCornerBitmap(context, bitmap, bitmap.getWidth() / 2, true, true, true, true);
 			}
-			
+
 			return bitmap;
 		} catch (Exception e) {
 		}
@@ -338,10 +338,8 @@ public class ImageLoader {
 		private File cacheDir;
 
 		public FileCache(Context context) {
-			// Find the dir to save cached images
 			String path = "Android/data/" + context.getPackageName() + "/LazyList";
 			if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
-				// LazyList
 				cacheDir = new File(android.os.Environment.getExternalStorageDirectory(), path);
 			} else {
 				cacheDir = context.getCacheDir();
@@ -352,8 +350,6 @@ public class ImageLoader {
 		}
 
 		public File getFile(String url) {
-			// I identify images by hashcode. Not a perfect solution, good for
-			// the demo.
 			String filename = String.valueOf(url.hashCode());
 			File f = new File(cacheDir, filename);
 			return f;
