@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.security.MessageDigest;
@@ -102,9 +103,38 @@ import com.vnp.core.service.RestClientCallBack;
 
 @SuppressLint("NewApi")
 public class CommonAndroid {
+	public static final String decodeUnicodeEncodingToAStringOfLetters(final String in) {
+		String working = in;
+		int index;
+		index = working.indexOf("\\u");
+		while (index > -1) {
+			int length = working.length();
+			if (index > (length - 6))
+				break;
+			int numStart = index + 2;
+			int numFinish = numStart + 4;
+			String substring = working.substring(numStart, numFinish);
+			int number = Integer.parseInt(substring, 16);
+			String stringStart = working.substring(0, index);
+			String stringEnd = working.substring(numFinish);
+			working = stringStart + ((char) number) + stringEnd;
+			index = working.indexOf("\\u");
+		}
+		return working;
+	}
 
-	public static Bitmap getBitmapFromAsset(String assetFile) {
-		return BitmapFactory.decodeFile("file:///android_asset/" + assetFile);
+	public static Bitmap getBitmapFromAsset(String assetFile, Context context) {
+		AssetManager assetManager = context.getAssets();
+
+		InputStream istr;
+		Bitmap bitmap = null;
+		try {
+			istr = assetManager.open(assetFile);
+			bitmap = BitmapFactory.decodeStream(istr);
+		} catch (Exception e) {
+		}
+
+		return bitmap;
 	}
 
 	/**
