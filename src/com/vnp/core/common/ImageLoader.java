@@ -42,7 +42,8 @@ public class ImageLoader {
 
 	/**
 	 * 
-	 * @param object : View, Activity, Dialog
+	 * @param object
+	 *            : View, Activity, Dialog
 	 * @param resId
 	 * @param resImgBase
 	 * @param url
@@ -57,11 +58,11 @@ public class ImageLoader {
 		if (object instanceof View && CommonAndroid.getView((View) object, resId) instanceof ImageView) {
 			imgv = CommonAndroid.getView((View) object, resId);
 		}
-		
+
 		if (object instanceof Dialog && CommonAndroid.getView((Dialog) object, resId) instanceof ImageView) {
 			imgv = CommonAndroid.getView((Dialog) object, resId);
 		}
-		
+
 		if (imgv != null) {
 			if (resImgBase > 0) {
 				imgv.setImageResource(resImgBase);
@@ -108,9 +109,10 @@ public class ImageLoader {
 
 		imageViews.put(imageView, url);
 		Bitmap bitmap = memoryCache.get(url + round);
-		if (bitmap != null)
+
+		if (bitmap != null) {
 			imageView.setImageBitmap(bitmap);
-		else {
+		} else {
 			queuePhoto(url, imageView, round);
 		}
 	}
@@ -230,11 +232,12 @@ public class ImageLoader {
 			FileInputStream stream2 = new FileInputStream(f);
 			Bitmap bitmap = BitmapFactory.decodeStream(stream2, null, o2);
 			stream2.close();
-			// if (roundMap.containsKey(url)) {
+
 			if (isRound) {
 				bitmap = createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getWidth(), ScalingLogic.CROP);
 				bitmap = getRoundedCornerBitmap(context, bitmap, bitmap.getWidth() / 2, true, true, true, true);
 			}
+			
 			return bitmap;
 		} catch (Exception e) {
 		}
@@ -269,8 +272,10 @@ public class ImageLoader {
 					return;
 				Bitmap bmp = getBitmap(photoToLoad.imageView, photoToLoad.url, photoToLoad.isRound);
 				memoryCache.put(photoToLoad.url + photoToLoad.isRound, bmp);
-				if (imageViewReused(photoToLoad))
+				if (imageViewReused(photoToLoad)) {
 					return;
+				}
+
 				BitmapDisplayer bd = new BitmapDisplayer(bmp, photoToLoad);
 				handler.post(bd);
 			} catch (Throwable th) {
