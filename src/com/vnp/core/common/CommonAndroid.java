@@ -897,12 +897,13 @@ public class CommonAndroid {
 	}
 
 	public static boolean getAllPackage(Context context) {
-		// <uses-permission android:name="android.permission.GET_TASKS" />
-		ActivityManager am = (ActivityManager) context.getSystemService(Activity.ACTIVITY_SERVICE);
-		String packageName = am.getRunningTasks(1).get(0).topActivity.getPackageName();
-		if (packageName.equalsIgnoreCase(context.getPackageName())) {
-			LogUtils.e("getAllPackage", packageName);
+		ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+		List<RunningAppProcessInfo> procInfos = activityManager.getRunningAppProcesses();
+		for (int i = 0; i < procInfos.size(); i++) {
+
+			LogUtils.e("getAllPackage", procInfos.get(i).processName);
 		}
+
 		return false;
 	}
 
