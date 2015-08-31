@@ -629,6 +629,7 @@ public class CommonAndroid {
 		try {
 			String str = cursor.getString(cursor.getColumnIndex(key));
 			return decodeUnicodeEncodingToAStringOfLetters(str);
+			//return str;
 		} catch (Exception exception) {
 			return "";
 		}
@@ -647,7 +648,9 @@ public class CommonAndroid {
 			if ("null".equals(str)) {
 				str = "";
 			}
-			return str;
+			
+			return decodeUnicodeEncodingToAStringOfLetters(str);
+			//return str;
 		} catch (JSONException e) {
 			return "";
 		}
