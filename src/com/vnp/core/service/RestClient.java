@@ -31,6 +31,8 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
+import com.vnp.core.common.LogUtils;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.http.AndroidHttpClient;
@@ -107,7 +109,7 @@ public class RestClient {
 						for (NameValuePair h : headers) {
 							request.addHeader(h.getName(), h.getValue());
 						}
-
+						LogUtils.e("urlx", url);
 						executeRequest(request, url);
 						break;
 					}
