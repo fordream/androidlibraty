@@ -109,7 +109,8 @@ public class RestClient {
 						for (NameValuePair h : headers) {
 							request.addHeader(h.getName(), h.getValue());
 						}
-						LogUtils.e("urlx", url);
+						LogUtils.e("urlx", url + combinedParams);
+						
 						executeRequest(request, url);
 						break;
 					}
