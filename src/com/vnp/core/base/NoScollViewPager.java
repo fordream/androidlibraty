@@ -23,10 +23,10 @@ public class NoScollViewPager extends ViewPager {
 
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent arg0) {
-		if (isEnableScroll) {
+		//if (isEnableScroll) {
 			return super.onInterceptTouchEvent(arg0);
-		}
-		return true;
+		//}
+		//return true;
 	}
 
 	@Override
