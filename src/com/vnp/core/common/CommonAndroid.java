@@ -103,6 +103,14 @@ import com.vnp.core.service.RestClientCallBack;
 
 @SuppressLint("NewApi")
 public class CommonAndroid {
+
+	public static void hideKeyboard(View view) {
+		if (view != null) {
+			InputMethodManager inputMethodManager = (InputMethodManager) view.getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+			inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+		}
+	}
+
 	public static final String decodeUnicodeEncodingToAStringOfLetters(final String in) {
 		String working = in;
 		int index;
@@ -629,7 +637,7 @@ public class CommonAndroid {
 		try {
 			String str = cursor.getString(cursor.getColumnIndex(key));
 			return decodeUnicodeEncodingToAStringOfLetters(str);
-//			 return str;
+			// return str;
 		} catch (Exception exception) {
 			return "";
 		}
@@ -650,7 +658,7 @@ public class CommonAndroid {
 			}
 
 			return decodeUnicodeEncodingToAStringOfLetters(str);
-//			 return str;
+			// return str;
 		} catch (JSONException e) {
 			return "";
 		}
