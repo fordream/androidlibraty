@@ -292,7 +292,7 @@ public class CommonAndroid {
 		try {
 			JSONArray array =sb;
 			for (int i = 0; i < array.length(); i++) {
-				JSONObject jsonObject = array.getJSONObject(index);
+				JSONObject jsonObject = array.getJSONObject(i);
 				String key = "\\" + jsonObject.getString("name");
 				String value = jsonObject.getString("value");
 
