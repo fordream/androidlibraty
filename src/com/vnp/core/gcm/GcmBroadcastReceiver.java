@@ -127,7 +127,7 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 		preferences.commit();
 	}
 
-	public String registerReturnRegisterId(Context context) {
+	public static String registerReturnRegisterId(Context context) {
 		String registerId = getRegisterId(context);
 		if (CommonAndroid.isBlank(registerId)) {
 			try {
