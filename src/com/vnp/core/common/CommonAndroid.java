@@ -74,6 +74,7 @@ import android.provider.Settings.Secure;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.telephony.TelephonyManager;
+import android.text.Html;
 import android.util.Base64;
 import android.view.Display;
 import android.view.LayoutInflater;
