@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.ContentUris;
@@ -209,6 +210,28 @@ public abstract class SkypeTable {
 		}
 	}
 
+	/**
+	 * 
+	 * @param json
+	 */
+	public void add(String json) {
+		try {
+			JSONObject jsonObject = new JSONObject(json);
+			add(jsonObject);
+		} catch (Exception e) {
+		}
+
+		try {
+			JSONArray jsonObject = new JSONArray(json);
+			add(jsonObject);
+		} catch (Exception e) {
+		}
+	}
+
+	/**
+	 * 
+	 * @param object
+	 */
 	public void add(JSONObject object) {
 		ContentValues values = new ContentValues();
 		try {
@@ -226,6 +249,11 @@ public abstract class SkypeTable {
 		}
 	}
 
+	/**
+	 * 
+	 * @param object
+	 * @param where
+	 */
 	public void add(JSONObject object, String where) {
 		ContentValues values = new ContentValues();
 		try {
@@ -246,6 +274,10 @@ public abstract class SkypeTable {
 		}
 	}
 
+	/**
+	 * 
+	 * @param object
+	 */
 	public void add(JSONArray object) {
 		try {
 			for (int i = 0; i < object.length(); i++) {
