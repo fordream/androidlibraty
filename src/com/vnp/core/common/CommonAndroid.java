@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.security.MessageDigest;
@@ -129,6 +130,12 @@ public class CommonAndroid {
 			working = stringStart + ((char) number) + stringEnd;
 			index = working.indexOf("\\u");
 		}
+
+		try {
+			working = new String(working.getBytes("ISO-8859-1"));
+		} catch (UnsupportedEncodingException e) {
+		}
+
 		return working;
 	}
 
