@@ -49,6 +49,7 @@ import android.provider.Settings.Secure;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.vnp.core.common.CommonAndroid;
 
 //com.vnp.core.gcm.GcmBroadcastReceiver
 public class GcmBroadcastReceiver extends BroadcastReceiver {
@@ -66,6 +67,10 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 		trIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		trIntent.putExtra("message", intent.getExtras().getString("message"));
 		context.startActivity(trIntent);
+	}
+
+	public static String getDeviceId(Context context) {
+		return Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
 	}
 
 	public interface RegisterCallBackRegisterId {
@@ -120,6 +125,19 @@ public class GcmBroadcastReceiver extends BroadcastReceiver {
 		final Editor preferences = context.getSharedPreferences(TAG, 0).edit();
 		preferences.putString(TAG, getRegisterId);
 		preferences.commit();
+	}
+
+	public String registerReturnRegisterId(Context context) {
+		String registerId = getRegisterId(context);
+		if (CommonAndroid.isBlank(registerId)) {
+			try {
+				GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
+				registerId = gcm.register(getSenderId(context));
+				saveRegisterId(context, registerId);
+			} catch (Exception e) {
+			}
+		}
+		return registerId;
 	}
 
 	public static final void registerCallBackRegisterId(final Context context, final RegisterCallBackRegisterId registerCallBackRegisterId) {
