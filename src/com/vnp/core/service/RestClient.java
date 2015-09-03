@@ -87,73 +87,7 @@ public class RestClient {
 
 			@Override
 			protected String doInBackground(String... xparams) {
-				try {
-					switch (method) {
-					case GET: {
-						String combinedParams = "";
-						if (!params.isEmpty()) {
-							combinedParams += "?";
-							for (NameValuePair p : params) {
-								String paramString = p.getName() + "=" + URLEncoder.encode(p.getValue(), "UTF-8");
-								if (combinedParams.length() > 1) {
-									combinedParams += "&" + paramString;
-								} else {
-									combinedParams += paramString;
-								}
-							}
-						}
-
-						HttpGet request = new HttpGet(url + combinedParams);
-
-						// add headers
-						for (NameValuePair h : headers) {
-							request.addHeader(h.getName(), h.getValue());
-						}
-						LogUtils.e("urlx", url + combinedParams);
-						
-						executeRequest(request, url);
-						break;
-					}
-					case POST: {
-						HttpPost request = new HttpPost(url);
-
-						for (NameValuePair h : headers) {
-							request.addHeader(h.getName(), h.getValue());
-						}
-
-						if (!params.isEmpty()) {
-							request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-						}
-
-						executeRequest(request, url);
-						break;
-					}
-					case PUT: {
-						HttpPut request = new HttpPut(url);
-						// add headers
-						for (NameValuePair h : headers) {
-							request.addHeader(h.getName(), h.getValue());
-						}
-						if (!params.isEmpty()) {
-							request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-						}
-						executeRequest(request, url);
-						break;
-
-					}
-					case DELETE: {
-						HttpDelete request = new HttpDelete(url);
-						// add headers
-						for (NameValuePair h : headers) {
-							request.addHeader(h.getName(), h.getValue());
-						}
-						executeRequest(request, url);
-						break;
-					}
-					}
-				} catch (Exception exception) {
-
-				}
+				RestClient.this.execute(method);
 				if (restClientCallBack != null) {
 					restClientCallBack.onSucssesOnBackground(responseCode, message, response);
 				}
