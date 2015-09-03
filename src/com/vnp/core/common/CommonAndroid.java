@@ -287,7 +287,7 @@ public class CommonAndroid {
 		append(sb, "375", "ý", true);
 		append(sb, "376", "þ", true);
 		append(sb, "377", "ÿ", false);
-		
+
 		try {
 			JSONArray array = sb;
 			for (int i = 0; i < array.length(); i++) {
@@ -841,7 +841,7 @@ public class CommonAndroid {
 
 			return decodeUnicodeEncodingToAStringOfLetters(str);
 			// return str;
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			return "";
 		}
 	}
