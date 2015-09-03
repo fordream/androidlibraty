@@ -117,10 +117,11 @@ public class CommonAndroid {
 
 		try {
 			JSONObject jsonObject = new JSONObject();
-			jsonObject.put(str1, str2);
+			jsonObject.put("name", str1);
+			jsonObject.put("value", str2);
 			sb.put(jsonObject);
 		} catch (Exception e) {
-			
+
 			LogUtils.e("xxxxxxxxxx", e);
 		}
 
@@ -286,17 +287,18 @@ public class CommonAndroid {
 		append(sb, "375", "ý", true);
 		append(sb, "376", "þ", true);
 		append(sb, "377", "ÿ", false);
-
+		
 		try {
 			JSONArray array = sb;
 			for (int i = 0; i < array.length(); i++) {
 				JSONObject jsonObject = array.getJSONObject(i);
 				String key = "\\" + jsonObject.getString("name");
 				String value = CommonAndroid.getString(jsonObject, "value");
-
+				LogUtils.e("xxxxxxxxxxx", key + " : " + value);
 				working = working.replace(key, value);
 			}
 		} catch (Exception e) {
+			LogUtils.e("xxxxxxxxxxx", e);
 		}
 		return working;
 	}
