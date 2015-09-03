@@ -9,7 +9,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.security.MessageDigest;
@@ -75,7 +74,6 @@ import android.provider.Settings.Secure;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.telephony.TelephonyManager;
-import android.text.Html;
 import android.util.Base64;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -116,14 +114,16 @@ public class CommonAndroid {
 	}
 
 	private static void append(JSONArray sb, String str1, String str2, boolean hasN) {
-		JSONObject jsonObject = new JSONObject();
+
 		try {
+			JSONObject jsonObject = new JSONObject();
 			jsonObject.put(str1, str2);
 			sb.put(jsonObject);
-		} catch (JSONException e) {
+		} catch (Exception e) {
+			
+			LogUtils.e("xxxxxxxxxx", e);
 		}
-		// sb.append("{\"name\"=").append("\"").append(str1).append("\",\"value\"=").append("\"").append(str2).append("\"}").append(hasN
-		// ? ",\n":"");
+
 	}
 
 	public static final String decodeUnicodeEncodingToAStringOfLetters(final String in) {
@@ -287,20 +287,16 @@ public class CommonAndroid {
 		append(sb, "376", "þ", true);
 		append(sb, "377", "ÿ", false);
 
-		// sb.append("]");
-
 		try {
-			JSONArray array =sb;
+			JSONArray array = sb;
 			for (int i = 0; i < array.length(); i++) {
 				JSONObject jsonObject = array.getJSONObject(i);
 				String key = "\\" + jsonObject.getString("name");
-				String value = jsonObject.getString("value");
+				String value = CommonAndroid.getString(jsonObject, "value");
 
-				LogUtils.e("textx", key + " : " + value);
+				working = working.replace(key, value);
 			}
 		} catch (Exception e) {
-
-			LogUtils.e("textx", e);
 		}
 		return working;
 	}
