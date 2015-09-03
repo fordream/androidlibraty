@@ -109,7 +109,7 @@ public class CommonAndroid {
 			InputMethodManager inputMethodManager = (InputMethodManager) view.getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
 			inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
 		}
-		
+
 	}
 
 	public static final String decodeUnicodeEncodingToAStringOfLetters(final String in) {
@@ -637,8 +637,15 @@ public class CommonAndroid {
 	public static String getString(Cursor cursor, String key) {
 		try {
 			String str = cursor.getString(cursor.getColumnIndex(key));
+
+			if ("null".equals(str)) {
+				str = "";
+			}
+
+			if (str == null)
+				str = "";
+
 			return decodeUnicodeEncodingToAStringOfLetters(str);
-			// return str;
 		} catch (Exception exception) {
 			return "";
 		}
@@ -657,6 +664,9 @@ public class CommonAndroid {
 			if ("null".equals(str)) {
 				str = "";
 			}
+
+			if (str == null)
+				str = "";
 
 			return decodeUnicodeEncodingToAStringOfLetters(str);
 			// return str;
