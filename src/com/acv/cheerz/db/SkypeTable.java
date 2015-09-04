@@ -233,14 +233,15 @@ public abstract class SkypeTable {
 	 * @param object
 	 */
 	public void add(JSONObject object) {
-		ContentValues values = new ContentValues();
+
 		try {
-			Set<String> colums = getColumns();
-			for (String column : colums) {
-				if (object.has(column)) {
-					values.put(column, object.getString(column));
-				}
-			}
+			ContentValues values = createContentValuesFormJsonObject(object);
+			// Set<String> colums = getColumns();
+			// for (String column : colums) {
+			// if (object.has(column)) {
+			// values.put(column, object.getString(column));
+			// }
+			// }
 
 			insert(values);
 
@@ -255,14 +256,9 @@ public abstract class SkypeTable {
 	 * @param where
 	 */
 	public void add(JSONObject object, String where) {
-		ContentValues values = new ContentValues();
 		try {
-			Set<String> colums = getColumns();
-			for (String column : colums) {
-				if (object.has(column)) {
-					values.put(column, object.getString(column));
-				}
-			}
+
+			ContentValues values = createContentValuesFormJsonObject(object);
 			if (has(where)) {
 				update(values, where);
 			} else {
@@ -332,7 +328,9 @@ public abstract class SkypeTable {
 			Set<String> colums = getColumns();
 			for (String column : colums) {
 				if (jsonObject.has(column)) {
-					values.put(column, jsonObject.getString(column));
+					String data = CommonAndroid.getString(jsonObject, column);
+					data = CommonAndroid.decodeOctal(data);
+					values.put(column, data);
 				}
 
 			}
