@@ -11,7 +11,7 @@ import android.os.Bundle;
 import com.vnp.core.common.CommonAndroid;
 import com.vnp.core.gcm.GcmBroadcastReceiver;
 
-public class VNPServiceRunable implements Runnable {
+public class VNPServiceRunable extends Thread {
 	private Context context;
 	private String api;
 
@@ -34,10 +34,10 @@ public class VNPServiceRunable implements Runnable {
 	}
 
 	@Override
-	final public void run() {
-		ExecuteAPI execute = execute(createBundle(), api);
-		run(execute);
-		finisḥ(execute);
+	public void run() {
+		//ExecuteAPI execute = execute(createBundle(), api);
+		//run(execute);
+		//finisḥ(execute);
 	}
 
 	public void finisḥ(ExecuteAPI execute) {
