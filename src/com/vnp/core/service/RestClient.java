@@ -491,11 +491,12 @@ public class RestClient {
 			@Override
 			protected String doInBackground(String... params) {
 				String image = "https://graph.facebook.com/" + userId + "/picture?type=large";
-				try {
-					mIcon1 = BitmapFactory.decodeStream(new URL(image).openConnection().getInputStream());
-				} catch (MalformedURLException e) {
-				} catch (IOException e) {
-				}
+				mIcon1 = executeLoadAvatarFacebook(userId);
+//				try {
+//					mIcon1 = BitmapFactory.decodeStream(new URL(image).openConnection().getInputStream());
+//				} catch (MalformedURLException e) {
+//				} catch (IOException e) {
+//				}
 				facebookAvatarCallBack.onSsucessInBackground(mIcon1);
 				return null;
 			}
@@ -504,6 +505,17 @@ public class RestClient {
 				facebookAvatarCallBack.onSsucess(mIcon1);
 			};
 		}.execute("");
+	}
+
+	public Bitmap executeLoadAvatarFacebook(final String facebookId) {
+		Bitmap mIcon1 = null;
+		String image = "https://graph.facebook.com/" + facebookId + "/picture?type=large";
+		try {
+			mIcon1 = BitmapFactory.decodeStream(new URL(image).openConnection().getInputStream());
+		} catch (Exception e) {
+		}
+
+		return mIcon1;
 	}
 }
 
