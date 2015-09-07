@@ -35,9 +35,9 @@ public class VNPServiceRunable extends Thread {
 
 	@Override
 	public void run() {
-		//ExecuteAPI execute = execute(createBundle(), api);
-		//run(execute);
-		//finisḥ(execute);
+		// ExecuteAPI execute = execute(createBundle(), api);
+		// run(execute);
+		// finisḥ(execute);
 	}
 
 	public void finisḥ(ExecuteAPI execute) {
@@ -84,9 +84,16 @@ public class VNPServiceRunable extends Thread {
 		private String parseData = "";
 		private String api;
 		private RestClient client;
+		private Bundle extras;
+
+		
+		public Bundle getExtras() {
+			return extras;
+		};
 
 		public void execute(Bundle extras, String api) {
 			this.api = api;
+			this.extras = extras;
 			client = new RestClient(getServiceUrl() + api);
 			Set<String> keys = extras.keySet();
 			for (String key : keys) {
