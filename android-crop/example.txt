@@ -1,0 +1,24 @@
+ <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
+ 
+ 
+ protected void cropImage(String  fileName) {
+
+		Uri inputUri = Uri.fromFile(new File(fileName));
+		Uri outputUri = Uri.fromFile(new File(outfileName));
+		Crop.of(inputUri, outputUri).asSquare().start(this);
+	}
+	
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		
+
+		if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
+
+			String outfileName = memoryUtils.getPathCacheExternalMemory() + "outtemp.png";
+			Bitmap bitmap = BitmapFactory.decodeFile(outfileName);
+
+			s3_img_avatar.setImageBitmap(bitmap);
+		}
+	}
+	
