@@ -1,3 +1,2 @@
 eclipse.preferences.version=1
-encoding//src/com/vnp/core/service/VNPServiceAsynTask.java=UTF-8
-encoding//src/com/vnp/core/service/VNPServiceRunable.java=UTF-8
+encoding//src/com/vnp/core/service/asyn/VNPServiceAsynTask.java=UTF-8
