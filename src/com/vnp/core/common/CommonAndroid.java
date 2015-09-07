@@ -2171,6 +2171,28 @@ public class CommonAndroid {
 		}
 	}
 
+	public static Bitmap scaleBitmap(Bitmap b, int width) {
+		if (b == null)
+			return b;
+
+		if (b.getWidth() <= width && b.getHeight() <= width) {
+			return b;
+		}
+
+		int newWight = 0;
+		int newHeight = 0;
+
+		if (b.getWidth() < b.getHeight()) {
+			newHeight = width;
+			newWight = b.getWidth() / b.getHeight() * newHeight;
+		} else {
+			newWight = width;
+			newHeight = b.getWidth() / b.getHeight() * newWight;
+		}
+
+		return Bitmap.createScaledBitmap(b, newWight, newWight, true);
+	}
+
 	public static Bitmap getScaledBitmap(Bitmap b, int reqWidth, int reqHeight) {
 
 		// crop image
