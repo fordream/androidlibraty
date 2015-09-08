@@ -28,16 +28,16 @@ public abstract class GalleryCameraChooser {
 		releaseCamera();
 	}
 
-	private String outfileName;
-	private Uri uriOutfileName;
+//	private String outfileName;
+//	private Uri uriOutfileName;
 
 	public void startCameraChooser(Activity activity) {
 		VnpMemoryUtils memoryUtils = new VnpMemoryUtils(activity);
 		new File(memoryUtils.getPathCacheExternalMemory()).mkdirs();
-		outfileName = memoryUtils.getPathCacheExternalMemory() + System.currentTimeMillis() + "xouttemp.png";
-		uriOutfileName = Uri.fromFile(new File(outfileName));
+//		outfileName = memoryUtils.getPathCacheExternalMemory() + System.currentTimeMillis() + "xouttemp.png";
+//		uriOutfileName = Uri.fromFile(new File(outfileName));
 		Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-		cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriOutfileName);
+//		cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriOutfileName);
 		activity.startActivityForResult(cameraIntent, REQUESTCODECAMERA);
 	}
 
@@ -70,16 +70,16 @@ public abstract class GalleryCameraChooser {
 			onGallery(bitmap);
 		} else if (REQUESTCODECAMERA == requestCode && resultCode == Activity.RESULT_OK) {
 
-			Bitmap bitmap = null;
-			try {
-				bitmap = decodeUri(activity, uriOutfileName);
-				ExifInterface exif = new ExifInterface(uriOutfileName.getPath());
-				int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-				int rotationInDegrees = exifToDegrees(rotation);
-				bitmap = Bitmap90(bitmap, rotationInDegrees);
-			} catch (IOException e1) {
-			}
-			// Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+//			Bitmap bitmap = null;
+//			try {
+//				bitmap = decodeUri(activity, uriOutfileName);
+//				ExifInterface exif = new ExifInterface(uriOutfileName.getPath());
+//				int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+//				int rotationInDegrees = exifToDegrees(rotation);
+//				bitmap = Bitmap90(bitmap, rotationInDegrees);
+//			} catch (IOException e1) {
+//			}
+			 Bitmap bitmap = (Bitmap) data.getExtras().get("data");
 
 			onCamera(bitmap);
 			releaseCamera();
