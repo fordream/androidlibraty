@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.hardware.Camera;
 import android.net.Uri;
 
 public abstract class GalleryCameraChooser {
@@ -19,15 +20,11 @@ public abstract class GalleryCameraChooser {
 		Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
 		photoPickerIntent.setType("image/*");
 		activity.startActivityForResult(photoPickerIntent, REQUESTCODEGALLERY);
+		releaseCamera();
 	}
 
 	public void startCameraChooser(Activity activity) {
 		Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//		if (hasImageCaptureBug()) {
-//			cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File("/sdcard/tmp")));
-//		} else {
-//			cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//		}
 		activity.startActivityForResult(cameraIntent, REQUESTCODECAMERA);
 	}
 
@@ -57,7 +54,25 @@ public abstract class GalleryCameraChooser {
 			}
 		} else if (REQUESTCODECAMERA == requestCode && resultCode == Activity.RESULT_OK) {
 			onCamera((Bitmap) data.getExtras().get("data"));
+
+			releaseCamera();
 		}
+	}
+
+	private void releaseCamera() {
+		try {
+			Camera camera = Camera.open();
+			if (camera != null) {
+				camera.stopPreview();
+				camera.setPreviewCallback(null);
+				camera.release();
+				camera = null;
+			}
+		} catch (Exception ex) {
+
+		} catch (Error er) {
+
+		}		
 	}
 
 	private Bitmap decodeUri(Activity activity, Uri selectedImage) throws FileNotFoundException {
