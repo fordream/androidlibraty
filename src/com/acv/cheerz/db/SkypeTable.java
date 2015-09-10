@@ -246,7 +246,6 @@ public abstract class SkypeTable {
 			insert(values);
 
 		} catch (Exception ex) {
-			LogUtils.e("SkypeTable", ex);
 		}
 	}
 
@@ -266,7 +265,6 @@ public abstract class SkypeTable {
 			}
 
 		} catch (Exception ex) {
-			LogUtils.e("SkypeTable", ex);
 		}
 	}
 
