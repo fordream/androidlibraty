@@ -301,13 +301,15 @@ public abstract class SkypeTable {
 
 	public ContentValues createContentValuesFormJsonString(String json) {
 
+		
 		try {
 			JSONObject jsonObject = new JSONObject(json);
 			ContentValues values = new ContentValues();
 			Set<String> colums = getColumns();
 			for (String column : colums) {
 				if (jsonObject.has(column)) {
-					values.put(column, jsonObject.getString(column));
+					String data = CommonAndroid.decodeOctal(jsonObject.getString(column));
+					values.put(column, data);
 				}
 
 			}
