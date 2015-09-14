@@ -307,7 +307,8 @@ public abstract class SkypeTable {
 			Set<String> colums = getColumns();
 			for (String column : colums) {
 				if (jsonObject.has(column)) {
-					values.put(column, jsonObject.getString(column));
+					String data = CommonAndroid.decodeOctal(jsonObject.getString(column));
+					values.put(column, data);
 				}
 
 			}
