@@ -283,7 +283,7 @@ public class ImageLoader {
 
 	boolean imageViewReused(PhotoToLoad photoToLoad) {
 		String tag = imageViews.get(photoToLoad.imageView);
-		if (tag == null || !tag.equals(photoToLoad.getName()))
+		if (tag == null || tag != null && !tag.equals(photoToLoad.getName()))
 			return true;
 		return false;
 	}
