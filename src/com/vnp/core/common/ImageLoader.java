@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -61,11 +60,13 @@ public class ImageLoader {
 			imgv = CommonAndroid.getView((Dialog) object, resId);
 		}
 
-		if (imgv != null && resImgBase > 0) {
-			imgv.setImageResource(resImgBase);
-		}
+		if (imgv != null) {
+			if (resImgBase > 0) {
+				imgv.setImageResource(resImgBase);
+			}
 
-		displayImage(url, imgv, isRound, requimentSize);
+			displayImage(url, imgv, isRound, requimentSize);
+		}
 	}
 
 	public void displayImage(String url, ImageView imageView, boolean round, int requimentSize) {
@@ -79,9 +80,7 @@ public class ImageLoader {
 
 		Bitmap bitmap = memoryCache.get(p.getName());
 
-		if (bitmap != null) {
-			imageView.setImageBitmap(bitmap);
-		} else {
+		if (!p.setImageBitmap(bitmap)) {
 			executorService.submit(new PhotosLoader(p));
 		}
 	}
@@ -94,6 +93,8 @@ public class ImageLoader {
 		displayImage(url, imageView, round, 0);
 	}
 
+	// ---------------------------------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------------------------------
 	private MemoryCache memoryCache = new MemoryCache();
 	private FileCache fileCache;
 	private Map<ImageView, String> imageViews = Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
@@ -230,6 +231,15 @@ public class ImageLoader {
 			return url + isRound + requimentSize;
 		}
 
+		public boolean setImageBitmap(Bitmap bitmap) {
+			if (imageView != null && bitmap != null) {
+				imageView.setImageBitmap(bitmap);
+				return true;
+			}
+
+			return false;
+		}
+
 		public String url;
 		public ImageView imageView;
 		public boolean isRound;
@@ -289,11 +299,10 @@ public class ImageLoader {
 		}
 
 		public void run() {
-			if (imageViewReused(photoToLoad))
+			if (imageViewReused(photoToLoad)) {
 				return;
-			if (bitmap != null) {
-				photoToLoad.imageView.setImageBitmap(bitmap);
 			}
+			photoToLoad.setImageBitmap(bitmap);
 		}
 	}
 
