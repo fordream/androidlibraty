@@ -9,6 +9,7 @@ public class DataStore {
 
 	private SharedPreferences preferences;
 
+	
 	private DataStore() {
 	}
 
