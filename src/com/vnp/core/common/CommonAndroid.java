@@ -121,6 +121,7 @@ public class CommonAndroid {
 			jsonObject.put("value", str2);
 			sb.put(jsonObject);
 		} catch (Exception e) {
+			LogUtils.e("fixeda", e);
 		}
 	}
 
@@ -274,6 +275,7 @@ public class CommonAndroid {
 				working = working.replace(key, value);
 			}
 		} catch (Exception e) {
+			LogUtils.e("fixeda", e);
 		}
 
 		return working;
