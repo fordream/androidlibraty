@@ -301,6 +301,7 @@ public abstract class SkypeTable {
 
 	public ContentValues createContentValuesFormJsonString(String json) {
 
+		
 		try {
 			JSONObject jsonObject = new JSONObject(json);
 			ContentValues values = new ContentValues();
