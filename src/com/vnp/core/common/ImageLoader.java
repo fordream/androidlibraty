@@ -61,13 +61,11 @@ public class ImageLoader {
 			imgv = CommonAndroid.getView((Dialog) object, resId);
 		}
 
-		if (imgv != null) {
-			if (resImgBase > 0) {
-				imgv.setImageResource(resImgBase);
-			}
-
-			displayImage(url, imgv, isRound, requimentSize);
+		if (imgv != null && resImgBase > 0) {
+			imgv.setImageResource(resImgBase);
 		}
+
+		displayImage(url, imgv, isRound, requimentSize);
 	}
 
 	public void displayImage(String url, ImageView imageView, boolean round, int requimentSize) {
