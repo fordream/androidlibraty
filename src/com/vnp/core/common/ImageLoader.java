@@ -69,6 +69,13 @@ public class ImageLoader {
 		}
 	}
 
+	/**
+	 * 
+	 * @param url
+	 * @param imageView
+	 * @param round
+	 * @param requimentSize
+	 */
 	public void displayImage(String url, ImageView imageView, boolean round, int requimentSize) {
 		if (imageView == null) {
 			return;
@@ -85,9 +92,24 @@ public class ImageLoader {
 		}
 	}
 
+	/**
+	 * 
+	 * @param object
+	 * @param resId
+	 * @param resImgBase
+	 * @param url
+	 * @param isRound
+	 */
 	public void display(Object object, int resId, int resImgBase, String url, boolean isRound) {
 		display(object, resId, resImgBase, url, isRound, 0);
 	}
+
+	/**
+	 * 
+	 * @param url
+	 * @param imageView
+	 * @param round
+	 */
 
 	public void displayImage(String url, ImageView imageView, boolean round) {
 		displayImage(url, imageView, round, 0);
@@ -95,8 +117,8 @@ public class ImageLoader {
 
 	// ---------------------------------------------------------------------------------------------------
 	// ---------------------------------------------------------------------------------------------------
-	private MemoryCache memoryCache = new MemoryCache();
-	private FileCache fileCache;
+	private VnpMemoryCache memoryCache = new VnpMemoryCache();
+	private VnpFileCache fileCache;
 	private Map<ImageView, String> imageViews = Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
 	private ExecutorService executorService;
 	private Handler handler = new Handler();
@@ -325,61 +347,6 @@ public class ImageLoader {
 		}
 	}
 
-	// ---------------------------------------------------------
-	// CLASS
-	// ---------------------------------------------------------
-
-	public class FileCache {
-
-		private File cacheDir;
-
-		public FileCache(Context context) {
-			String path = "Android/data/" + context.getPackageName() + "/LazyList";
-			if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
-				cacheDir = new File(android.os.Environment.getExternalStorageDirectory(), path);
-			} else {
-				cacheDir = context.getCacheDir();
-			}
-			if (!cacheDir.exists()) {
-				cacheDir.mkdirs();
-			}
-		}
-
-		public File getFile(String url) {
-
-			String filename = String.valueOf(url.hashCode());
-			File f = new File(cacheDir, filename);
-			return f;
-
-		}
-
-		public void clear() {
-			File[] files = cacheDir.listFiles();
-			for (File f : files)
-				f.delete();
-		}
-
-	}
-
-	public class MemoryCache {
-		private HashMap<String, SoftReference<Bitmap>> cache = new HashMap<String, SoftReference<Bitmap>>();
-
-		public Bitmap get(String id) {
-			if (!cache.containsKey(id))
-				return null;
-			SoftReference<Bitmap> ref = cache.get(id);
-			return ref.get();
-		}
-
-		public void put(String id, Bitmap bitmap) {
-			cache.put(id, new SoftReference<Bitmap>(bitmap));
-		}
-
-		public void clear() {
-			cache.clear();
-		}
-	}
-
 	public void updateContext(Context context2) {
 		if (context == null) {
 			context = context2;
@@ -483,7 +450,7 @@ public class ImageLoader {
 	private void init(Context xcontext) {
 		if (this.context == null && xcontext != null) {
 			this.context = xcontext;
-			fileCache = new FileCache(context);
+			fileCache = new VnpFileCache(context);
 			executorService = Executors.newFixedThreadPool(5);
 		}
 	}
