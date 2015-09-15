@@ -14,6 +14,11 @@ import android.os.Bundle;
 
 public class VNPServiceAsynTask extends AsyncTask<String, String, String> {
 	private ProgressDialog progressDialog;
+	private boolean isRunning = false;
+
+	public boolean isRunning() {
+		return isRunning;
+	}
 
 	public void start() {
 		execute("");
@@ -65,7 +70,14 @@ public class VNPServiceAsynTask extends AsyncTask<String, String, String> {
 
 	@Override
 	final public String doInBackground(String... params) {
+		isRunning = true;
 		run();
 		return null;
+	}
+
+	@Override
+	protected void onPostExecute(String result) {
+		super.onPostExecute(result);
+		isRunning = false;
 	}
 }
