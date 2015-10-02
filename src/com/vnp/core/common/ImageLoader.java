@@ -212,12 +212,12 @@ public class ImageLoader {
 			stream1.close();
 
 			// Find the correct scale value. It should be the power of 2.
-			int REQUIRED_SIZE = 200;
+			int REQUIRED_SIZE = 300;
 
 			if (photoToLoad.requimentSize > 0) {
 				REQUIRED_SIZE = photoToLoad.requimentSize;
 			}
-			REQUIRED_SIZE = 200;
+			REQUIRED_SIZE = 300;
 			int width_tmp = o.outWidth, height_tmp = o.outHeight;
 
 			int scale = 1;
