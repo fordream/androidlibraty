@@ -176,7 +176,7 @@ public class ImageLoader {
 			ex.printStackTrace();
 			LogUtils.e("TAGEXE", ex);
 			if (ex instanceof OutOfMemoryError) {
-				
+
 				memoryCache.clear();
 			}
 			return null;
@@ -252,7 +252,7 @@ public class ImageLoader {
 			return url + isRound + requimentSize;
 		}
 
-		public boolean setImageBitmap(Bitmap bitmap) {
+		public boolean setImageBitmap(final Bitmap bitmap) {
 			if (imageView != null && bitmap != null) {
 				imageView.setImageBitmap(bitmap);
 				return true;

@@ -11,17 +11,18 @@ public class VnpMemoryCache {
 
 	public Bitmap get(String name) {
 		Bitmap bitmap = null;
+		String currentName = name;
 		if (!CommonAndroid.isBlank(name)) {
 			// LogUtils.e("TAGEXEGET", "" + name.hashCode());
 			name = "" + name.hashCode();
 		}
+
 		if (!cache.containsKey(name)) {
 
 		} else {
 			SoftReference<Bitmap> ref = cache.get(name);
 			bitmap = ref.get();
 		}
-
 		return bitmap;
 	}
 
