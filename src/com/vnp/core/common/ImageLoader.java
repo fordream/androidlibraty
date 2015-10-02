@@ -212,18 +212,19 @@ public class ImageLoader {
 			stream1.close();
 
 			// Find the correct scale value. It should be the power of 2.
-			int REQUIRED_SIZE = 300;
+			int REQUIRED_SIZE = 200;
 
 			if (photoToLoad.requimentSize > 0) {
 				REQUIRED_SIZE = photoToLoad.requimentSize;
 			}
-			REQUIRED_SIZE = 300;
+			REQUIRED_SIZE = 200;
 			int width_tmp = o.outWidth, height_tmp = o.outHeight;
 
+			int withStart = width_tmp, heightStart = height_tmp;
 			int scale = 1;
 			while (true) {
 				if (width_tmp / 2 < REQUIRED_SIZE && height_tmp / 2 < REQUIRED_SIZE) {
-					//scale *= 2;
+					// scale *= 2;
 					break;
 				}
 				width_tmp /= 2;
@@ -238,10 +239,10 @@ public class ImageLoader {
 			Bitmap bitmap = BitmapFactory.decodeStream(stream2, null, o2);
 			stream2.close();
 
-			LogUtils.e("checkssss", "1 :  " + bitmap.getWidth() + " : " + bitmap.getHeight() + " : " + scale);
-
 			if (photoToLoad.isRound) {
-				bitmap = createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getWidth(), ScalingLogic.CROP);
+				int widthForScale = bitmap.getWidth();
+				widthForScale = 100;
+				bitmap = createScaledBitmap(bitmap, widthForScale, widthForScale, ScalingLogic.CROP);
 				bitmap = getRoundedCornerBitmap(context, bitmap, bitmap.getWidth() / 2, true, true, true, true);
 			}
 
