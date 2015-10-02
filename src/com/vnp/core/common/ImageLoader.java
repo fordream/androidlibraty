@@ -217,11 +217,15 @@ public class ImageLoader {
 			if (photoToLoad.requimentSize > 0) {
 				REQUIRED_SIZE = photoToLoad.requimentSize;
 			}
+			REQUIRED_SIZE = 200;
 			int width_tmp = o.outWidth, height_tmp = o.outHeight;
+
 			int scale = 1;
 			while (true) {
-				if (width_tmp / 2 < REQUIRED_SIZE | height_tmp / 2 < REQUIRED_SIZE)
+				if (width_tmp / 2 < REQUIRED_SIZE && height_tmp / 2 < REQUIRED_SIZE) {
+					//scale *= 2;
 					break;
+				}
 				width_tmp /= 2;
 				height_tmp /= 2;
 				scale *= 2;
@@ -233,6 +237,8 @@ public class ImageLoader {
 			FileInputStream stream2 = new FileInputStream(f);
 			Bitmap bitmap = BitmapFactory.decodeStream(stream2, null, o2);
 			stream2.close();
+
+			LogUtils.e("checkssss", "1 :  " + bitmap.getWidth() + " : " + bitmap.getHeight() + " : " + scale);
 
 			if (photoToLoad.isRound) {
 				bitmap = createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getWidth(), ScalingLogic.CROP);
@@ -254,6 +260,7 @@ public class ImageLoader {
 
 		public boolean setImageBitmap(final Bitmap bitmap) {
 			if (imageView != null && bitmap != null) {
+
 				imageView.setImageBitmap(bitmap);
 				return true;
 			}
