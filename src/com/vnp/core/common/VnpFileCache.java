@@ -10,8 +10,8 @@ import android.os.StatFs;
 public class VnpFileCache {
 	private File cacheDir;
 
-	public VnpFileCache(Context context) {
-		String path = "Android/data/" + context.getPackageName() + "/LazyList";
+	public VnpFileCache(Context context, String nameCahes) {
+		String path = "Android/data/" + context.getPackageName() + "/LazyList/" + nameCahes;
 		if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
 			cacheDir = new File(android.os.Environment.getExternalStorageDirectory(), path);
 		} else {

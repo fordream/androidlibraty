@@ -5,15 +5,14 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.ref.SoftReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -82,11 +81,8 @@ public class ImageLoader {
 		}
 
 		PhotoToLoad p = new PhotoToLoad(url, imageView, round, requimentSize);
-
 		imageViews.put(imageView, p.getName());
-
 		Bitmap bitmap = memoryCache.get(p.getName());
-
 		if (!p.setImageBitmap(bitmap)) {
 			executorService.submit(new PhotosLoader(p));
 		}
@@ -178,8 +174,11 @@ public class ImageLoader {
 			}
 		} catch (Throwable ex) {
 			ex.printStackTrace();
-			if (ex instanceof OutOfMemoryError)
+			LogUtils.e("TAGEXE", ex);
+			if (ex instanceof OutOfMemoryError) {
+				
 				memoryCache.clear();
+			}
 			return null;
 		}
 	}
@@ -213,7 +212,7 @@ public class ImageLoader {
 			stream1.close();
 
 			// Find the correct scale value. It should be the power of 2.
-			int REQUIRED_SIZE = 480;
+			int REQUIRED_SIZE = 200;
 
 			if (photoToLoad.requimentSize > 0) {
 				REQUIRED_SIZE = photoToLoad.requimentSize;
@@ -326,11 +325,6 @@ public class ImageLoader {
 			}
 			photoToLoad.setImageBitmap(bitmap);
 		}
-	}
-
-	public void clearCache() {
-		memoryCache.clear();
-		fileCache.clear();
 	}
 
 	private void CopyStream(InputStream is, OutputStream os) {
@@ -450,8 +444,10 @@ public class ImageLoader {
 	private void init(Context xcontext) {
 		if (this.context == null && xcontext != null) {
 			this.context = xcontext;
-			fileCache = new VnpFileCache(context);
-			executorService = Executors.newFixedThreadPool(5);
+			if (fileCache == null)
+				fileCache = new VnpFileCache(context, "quare");
+			if (executorService == null)
+				executorService = Executors.newFixedThreadPool(50);
 		}
 	}
 }

@@ -2,21 +2,38 @@ package com.vnp.core.common;
 
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
+import java.util.Set;
 
 import android.graphics.Bitmap;
 
 public class VnpMemoryCache {
 	private HashMap<String, SoftReference<Bitmap>> cache = new HashMap<String, SoftReference<Bitmap>>();
 
-	public Bitmap get(String id) {
-		if (!cache.containsKey(id))
-			return null;
-		SoftReference<Bitmap> ref = cache.get(id);
-		return ref.get();
+	public Bitmap get(String name) {
+		Bitmap bitmap = null;
+		if (!CommonAndroid.isBlank(name)) {
+			// LogUtils.e("TAGEXEGET", "" + name.hashCode());
+			name = "" + name.hashCode();
+		}
+		if (!cache.containsKey(name)) {
+
+		} else {
+			SoftReference<Bitmap> ref = cache.get(name);
+			bitmap = ref.get();
+		}
+
+		return bitmap;
 	}
 
-	public void put(String id, Bitmap bitmap) {
-		cache.put(id, new SoftReference<Bitmap>(bitmap));
+	public void put(String name, Bitmap bitmap) {
+		if (!CommonAndroid.isBlank(name)) {
+			// LogUtils.e("TAGEXEGET", "" + name.hashCode());
+			name = "" + name.hashCode();
+		}
+		if (bitmap != null) {
+			cache.put(name, new SoftReference<Bitmap>(bitmap));
+		}
+
 	}
 
 	public void clear() {

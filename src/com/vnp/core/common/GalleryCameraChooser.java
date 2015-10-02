@@ -32,7 +32,7 @@ public abstract class GalleryCameraChooser {
 	// private Uri uriOutfileName;
 
 	public void startCameraChooser(Activity activity) {
-		VnpFileCache memoryUtils = new VnpFileCache(activity);
+		VnpFileCache memoryUtils = new VnpFileCache(activity, "VnpFileCache");
 		new File(memoryUtils.getPathCacheExternalMemory()).mkdirs();
 		// outfileName = memoryUtils.getPathCacheExternalMemory() +
 		// System.currentTimeMillis() + "xouttemp.png";

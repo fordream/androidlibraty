@@ -21,6 +21,14 @@ public class LogUtils {
 		}
 	}
 
+	public static void e(String tag, Throwable e) {
+		if (ENABLE) {
+			Log.e(tag, "-------------------Start----------------------");
+			Log.e(tag, "error", e);
+			Log.e(tag, "-------------------End----------------------");
+		}
+	}
+
 	public static void d(String tag, String messgae) {
 		if (ENABLE) {
 			Log.d(tag, "-------------------Start----------------------");
