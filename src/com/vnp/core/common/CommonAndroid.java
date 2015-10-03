@@ -24,7 +24,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.accounts.Account;
@@ -54,7 +53,10 @@ import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -713,6 +715,32 @@ public class CommonAndroid {
 	 * @param listView
 	 */
 	public static void disableListTypeIphone(ListView listView) {
+
+	}
+
+	public static Bitmap getImgBangDiem(View view) {
+//		Bitmap b = Bitmap.createBitmap(v.getLayoutParams().width, v.getLayoutParams().height, Bitmap.Config.ARGB_8888);
+//		Canvas c = new Canvas(b);
+//		v.layout(v.getLeft(), v.getTop(), v.getRight(), v.getBottom());
+//		v.draw(c);
+
+//		 v.setDrawingCacheEnabled(true);
+//		 v.buildDrawingCache();
+//		 Bitmap b = v.getDrawingCache();
+//		 v.setDrawingCacheEnabled(false);
+
+		 
+		 
+		  Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+		    Canvas canvas = new Canvas(returnedBitmap);
+		    Drawable bgDrawable = view.getBackground();
+		    if (bgDrawable != null)
+		        bgDrawable.draw(canvas);
+		    else
+		        canvas.drawColor(Color.WHITE);
+		    view.draw(canvas);
+		    return returnedBitmap;
+//		return b;
 
 	}
 

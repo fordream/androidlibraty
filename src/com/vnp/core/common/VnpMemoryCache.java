@@ -28,7 +28,6 @@ public class VnpMemoryCache {
 
 	public void put(String name, Bitmap bitmap) {
 		if (!CommonAndroid.isBlank(name)) {
-			// LogUtils.e("TAGEXEGET", "" + name.hashCode());
 			name = "" + name.hashCode();
 		}
 		if (bitmap != null) {
