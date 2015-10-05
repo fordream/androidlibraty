@@ -79,12 +79,21 @@ public class ImageLoader {
 		if (imageView == null) {
 			return;
 		}
-
 		PhotoToLoad p = new PhotoToLoad(url, imageView, round, requimentSize);
-		imageViews.put(imageView, p.getName());
+		postAsysTasḳ(p);
+
+	}
+
+	private void postAsysTasḳ(final PhotoToLoad p) {
+		imageViews.put(p.imageView, p.getName());
 		Bitmap bitmap = memoryCache.get(p.getName());
 		if (!p.setImageBitmap(bitmap)) {
-			executorService.submit(new PhotosLoader(p));
+			new Thread() {
+				public void run() {
+					executorService.submit(new PhotosLoader(p));
+				};
+			}.start();
+
 		}
 	}
 
