@@ -213,12 +213,11 @@ public class ImageLoader {
 				BitmapDisplayer bd = new BitmapDisplayer(bmp, photoToLoad);
 				handler.post(bd);
 			} catch (Throwable th) {
-				th.printStackTrace();
 			}
 		}
 	}
 
-	boolean imageViewReused(PhotoToLoad photoToLoad) {
+	private boolean imageViewReused(PhotoToLoad photoToLoad) {
 		String tag = imageViews.get(photoToLoad.getImageView());
 		if (tag == null || tag != null && !tag.equals(photoToLoad.getName())) {
 			return true;
