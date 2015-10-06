@@ -11,7 +11,6 @@ public class PhotoToLoad {
 
 	public boolean setImageBitmap(final Bitmap bitmap) {
 		if (imageView != null && bitmap != null) {
-
 			imageView.setImageBitmap(bitmap);
 			return true;
 		}
