@@ -79,4 +79,32 @@ public class FontsUtils {
 			return null;
 		}
 	}
+
+	/*
+	  <?xml version="1.0" encoding="utf-8"?> 
+	  <resources> 
+	  	<style name="MyAppTheme" parent="@android:style/Theme.Holo.Light"> 
+	  		<item name="android:typeface">serif</item> 
+	  	</style> 
+	  </resources>
+	 */
+	/**
+	 * 
+	 * @param defaultFontNameToOverride 	typeface			"SERIF"
+	 * @param customFontFileNameInAssets 	typeface			"fonts/Roboto-Regular.ttf"
+	 * 		textStyle???????????????????????????
+	 */
+	public void onCreateForChangeDefault(String defaultFontNameToOverride, String customFontFileNameInAssets) {
+		// "SERIF", "fonts/Roboto-Regular.ttf"
+		try {
+			final Typeface customFontTypeface = Typeface.createFromAsset(context.getAssets(), customFontFileNameInAssets);
+
+			final java.lang.reflect.Field defaultFontTypefaceField = Typeface.class.getDeclaredField(defaultFontNameToOverride);
+			defaultFontTypefaceField.setAccessible(true);
+			defaultFontTypefaceField.set(null, customFontTypeface);
+		} catch (Exception e) {
+			LogUtils.e("fontsetup", "Can not set custom font " + customFontFileNameInAssets + " instead of " + defaultFontNameToOverride);
+		}
+	}
+
 }
