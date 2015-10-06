@@ -2,7 +2,6 @@ package com.vnp.core.common;
 
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
-import java.util.Set;
 
 import android.graphics.Bitmap;
 
@@ -11,9 +10,7 @@ public class VnpMemoryCache {
 
 	public Bitmap get(String name) {
 		Bitmap bitmap = null;
-		String currentName = name;
 		if (!CommonAndroid.isBlank(name)) {
-			// LogUtils.e("TAGEXEGET", "" + name.hashCode());
 			name = "" + name.hashCode();
 		}
 
