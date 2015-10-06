@@ -6,7 +6,7 @@ import android.widget.ImageView;
 public class PhotoToLoad {
 
 	public String getName() {
-		return url + isRound + requimentSize;
+		return url + imageLoaderTypeConvert + requimentSize;
 	}
 
 	public boolean setImageBitmap(final Bitmap bitmap) {
@@ -35,12 +35,12 @@ public class PhotoToLoad {
 		this.imageView = imageView;
 	}
 
-	public boolean isRound() {
-		return isRound;
+	public ImageLoaderTypeConvert getImageLoaderTypeConvert() {
+		return imageLoaderTypeConvert;
 	}
 
-	public void setRound(boolean isRound) {
-		this.isRound = isRound;
+	public void setImageLoaderTypeConvert(ImageLoaderTypeConvert imageLoaderTypeConvert) {
+		this.imageLoaderTypeConvert = imageLoaderTypeConvert;
 	}
 
 	public int getRequimentSize() {
@@ -53,13 +53,13 @@ public class PhotoToLoad {
 
 	private String url;
 	private ImageView imageView;
-	private boolean isRound;
+	private ImageLoaderTypeConvert imageLoaderTypeConvert;
 	private int requimentSize;
 
-	public PhotoToLoad(String u, ImageView i, boolean isRound, int requimentSize) {
+	public PhotoToLoad(String u, ImageView i, ImageLoaderTypeConvert imageLoaderTypeConvert, int requimentSize) {
 		url = u;
 		imageView = i;
-		this.isRound = isRound;
+		this.imageLoaderTypeConvert = imageLoaderTypeConvert;
 		this.requimentSize = requimentSize;
 
 	}

@@ -37,12 +37,11 @@ public class ImageLoader {
 	 * @param round
 	 * @param requimentSize
 	 */
-	public void displayImage(String url, ImageView imageView, boolean round, int requimentSize) {
+	public void displayImage(String url, ImageView imageView, ImageLoaderTypeConvert imageLoaderTypeConvert, int requimentSize) {
 		if (imageView == null) {
 			return;
 		}
-		round = true;
-		PhotoToLoad p = new PhotoToLoad(url, imageView, round, requimentSize);
+		PhotoToLoad p = new PhotoToLoad(url, imageView, imageLoaderTypeConvert, requimentSize);
 		imageViews.put(imageView, p.getName());
 		Bitmap bitmap = memoryCache.get(p.getName());
 		if (!p.setImageBitmap(bitmap)) {
@@ -175,11 +174,14 @@ public class ImageLoader {
 			Bitmap bitmap = BitmapFactory.decodeStream(stream2, null, o2);
 			stream2.close();
 
-			if (photoToLoad.isRound()) {
+			if (photoToLoad.getImageLoaderTypeConvert() == ImageLoaderTypeConvert.ROUND) {
 				int widthForScale = bitmap.getWidth();
 				widthForScale = 100;
 				bitmap = VnpBitmapUtils.createScaledBitmap(bitmap, widthForScale, widthForScale, ScalingLogic.CROP);
 				bitmap = VnpBitmapUtils.getRoundedCornerBitmap(context, bitmap, bitmap.getWidth() / 2, true, true, true, true);
+			} else if (photoToLoad.getImageLoaderTypeConvert() == ImageLoaderTypeConvert.SQUARE) {
+				int widthForScale = bitmap.getWidth();
+				bitmap = VnpBitmapUtils.createScaledBitmap(bitmap, widthForScale, widthForScale, ScalingLogic.CROP);
 			}
 
 			return bitmap;
