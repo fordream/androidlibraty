@@ -41,10 +41,11 @@ public class ImageLoader {
 		if (imageView == null) {
 			return;
 		}
+
 		PhotoToLoad p = new PhotoToLoad(url, imageView, imageLoaderTypeConvert, requimentSize);
-		imageViews.put(imageView, p.getName());
 		Bitmap bitmap = memoryCache.get(p.getName());
 		if (!p.setImageBitmap(bitmap)) {
+			imageViews.put(imageView, p.getName());
 			executorService.submit(new PhotosLoader(p));
 		}
 	}
@@ -235,9 +236,9 @@ public class ImageLoader {
 		}
 
 		public void run() {
-			if (imageViewReused(photoToLoad)) {
-				return;
-			}
+//			if (imageViewReused(photoToLoad)) {
+//				return;
+//			}
 			photoToLoad.setImageBitmap(bitmap);
 		}
 	}
