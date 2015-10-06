@@ -13,6 +13,8 @@ public class PhotoToLoad {
 		if (imageView != null && bitmap != null) {
 			imageView.setImageBitmap(bitmap);
 			return true;
+		} else if (resDefault > 0) {
+			imageView.setImageResource(resDefault);
 		}
 
 		return false;
@@ -50,16 +52,25 @@ public class PhotoToLoad {
 		this.requimentSize = requimentSize;
 	}
 
+	public int getResDefault() {
+		return resDefault;
+	}
+
+	public void setResDefault(int resDefault) {
+		this.resDefault = resDefault;
+	}
+
 	private String url;
 	private ImageView imageView;
 	private ImageLoaderTypeConvert imageLoaderTypeConvert;
 	private int requimentSize;
+	private int resDefault = 0;
 
-	public PhotoToLoad(String u, ImageView i, ImageLoaderTypeConvert imageLoaderTypeConvert, int requimentSize) {
+	public PhotoToLoad(String u, ImageView i, ImageLoaderTypeConvert imageLoaderTypeConvert, int requimentSize, int resDefault) {
 		url = u;
 		imageView = i;
 		this.imageLoaderTypeConvert = imageLoaderTypeConvert;
 		this.requimentSize = requimentSize;
-
+		this.resDefault = resDefault;
 	}
 }

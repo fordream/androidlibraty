@@ -37,12 +37,12 @@ public class ImageLoader {
 	 * @param round
 	 * @param requimentSize
 	 */
-	public void displayImage(String url, ImageView imageView, ImageLoaderTypeConvert imageLoaderTypeConvert, int requimentSize) {
+	public void displayImage(String url, ImageView imageView, ImageLoaderTypeConvert imageLoaderTypeConvert, int requimentSize, int resDetail) {
 		if (imageView == null) {
 			return;
 		}
 
-		PhotoToLoad p = new PhotoToLoad(url, imageView, imageLoaderTypeConvert, requimentSize);
+		PhotoToLoad p = new PhotoToLoad(url, imageView, imageLoaderTypeConvert, requimentSize, resDetail);
 		Bitmap bitmap = memoryCache.get(p.getName());
 		if (!p.setImageBitmap(bitmap)) {
 			imageViews.put(imageView, p.getName());
@@ -235,9 +235,9 @@ public class ImageLoader {
 		}
 
 		public void run() {
-//			if (imageViewReused(photoToLoad)) {
-//				return;
-//			}
+			if (imageViewReused(photoToLoad)) {
+				return;
+			}
 			photoToLoad.setImageBitmap(bitmap);
 		}
 	}
