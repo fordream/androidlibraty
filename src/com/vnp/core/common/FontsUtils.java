@@ -90,7 +90,7 @@ public class FontsUtils {
 	 */
 	/**
 	 * 
-	 * @param defaultFontNameToOverride 	typeface			SERIF NORMAL SANS MONOSPACE 
+	 * @param defaultFontNameToOverride 	typeface			SERIF NORMAL(DEFAULT) SANS MONOSPACE 
 	 * @param customFontFileNameInAssets 	typeface			"fonts/Roboto-Regular.ttf"
 	 * 		textStyle???????????????????????????
 	 */
