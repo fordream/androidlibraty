@@ -81,30 +81,34 @@ public class FontsUtils {
 	}
 
 	/*
-	  <?xml version="1.0" encoding="utf-8"?> 
-	  <resources> 
-	  	<style name="MyAppTheme" parent="@android:style/Theme.Holo.Light"> 
-	  		<item name="android:typeface">serif</item> 
-	  	</style> 
-	  </resources>
+	 * <?xml version="1.0" encoding="utf-8"?> <resources> <style
+	 * name="MyAppTheme" parent="@android:style/Theme.Holo.Light"> <item
+	 * name="android:typeface">serif</item> </style> </resources>
 	 */
 	/**
 	 * 
-	 * @param defaultFontNameToOverride 	typeface			SERIF NORMAL(DEFAULT) SANS MONOSPACE 
-	 * @param customFontFileNameInAssets 	typeface			"fonts/Roboto-Regular.ttf"
-	 * 		textStyle???????????????????????????
+	 * @param defaultFontNameToOverride
+	 *            typeface SERIF NORMAL(DEFAULT) SANS MONOSPACE
+	 * @param customFontFileNameInAssets
+	 *            typeface "fonts/Roboto-Regular.ttf"
+	 *            textStyle???????????????????????????
 	 */
-	public void onCreateForChangeDefault(String defaultFontNameToOverride, String customFontFileNameInAssets) {
+	public boolean onCreateForChangeDefault(String defaultFontNameToOverride, String customFontFileNameInAssets) {
+		boolean success = false;
 		// "SERIF", "fonts/Roboto-Regular.ttf"
 		try {
 			final Typeface customFontTypeface = Typeface.createFromAsset(context.getAssets(), customFontFileNameInAssets);
-			
+
 			final java.lang.reflect.Field defaultFontTypefaceField = Typeface.class.getDeclaredField(defaultFontNameToOverride);
 			defaultFontTypefaceField.setAccessible(true);
 			defaultFontTypefaceField.set(null, customFontTypeface);
+			success = true;
 		} catch (Exception e) {
 			LogUtils.e("fontsetup", "Can not set custom font " + customFontFileNameInAssets + " instead of " + defaultFontNameToOverride);
+			success = false;
 		}
+
+		return success;
 	}
 
 }
