@@ -98,7 +98,7 @@ public class FontsUtils {
 		// "SERIF", "fonts/Roboto-Regular.ttf"
 		try {
 			final Typeface customFontTypeface = Typeface.createFromAsset(context.getAssets(), customFontFileNameInAssets);
-
+			
 			final java.lang.reflect.Field defaultFontTypefaceField = Typeface.class.getDeclaredField(defaultFontNameToOverride);
 			defaultFontTypefaceField.setAccessible(true);
 			defaultFontTypefaceField.set(null, customFontTypeface);
