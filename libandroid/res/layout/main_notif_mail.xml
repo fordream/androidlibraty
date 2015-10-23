@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  
+    android:id="@+id/dialog_main"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="@dimen/dimen_69dp"
+        android:layout_height="@dimen/dimen_69dp"
+        android:layout_gravity="center" >
+
+        <ImageView
+            android:layout_width="@dimen/dimen_69dp"
+            android:layout_height="@dimen/dimen_69dp"
+            android:background="@drawable/btn_pressed"
+            android:scaleType="fitXY" />
+
+        <RelativeLayout
+            android:layout_width="@dimen/dimen_20dp"
+            android:layout_height="@dimen/dimen_20dp"
+            android:layout_alignParentRight="true" >
+
+            <ImageView
+                android:layout_width="@dimen/dimen_20dp"
+                android:layout_height="@dimen/dimen_20dp"
+                android:background="@drawable/btn_pressed"
+                android:scaleType="fitXY" />
+
+            <RelativeLayout
+                android:layout_width="@dimen/dimen_20dp"
+                android:layout_height="@dimen/dimen_17dp"
+                android:layout_centerInParent="true" >
+
+                <TextView
+                    android:id="@+id/number_value_mail"
+                    android:layout_width="@dimen/dimen_20dp"
+                    android:layout_height="@dimen/dimen_17dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:maxLength="3"
+                    android:singleLine="true"
+                    android:text="99"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/dimen_9dp"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <!--  -->
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="@dimen/dimen_69dp"
+        android:layout_height="@dimen/dimen_24dp" >
+
+        <ImageView
+            android:layout_width="@dimen/dimen_69dp"
+            android:layout_height="@dimen/dimen_24dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/btn_pressed"
+            android:scaleType="fitXY"
+            android:visibility="visible" />
+
+        <RelativeLayout
+            android:layout_width="@dimen/dimen_69dp"
+            android:layout_height="@dimen/dimen_20dp"
+            android:layout_centerInParent="true" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_20dp"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:singleLine="true"
+                android:text="@string/cancel"
+                android:textColor="#030303"
+                android:textSize="@dimen/dimen_10dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>
